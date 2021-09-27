@@ -1,8 +1,8 @@
 import './App.css';
 import React from 'react';
-import Login from "./components/login"
-import Auth from "./components/auth"
-import Home from "./components/home"
+import Login from "./components/pages/login"
+import Auth from "./components/pages/auth"
+import Home from "./components/pages/home"
 import ProtectedRoute from "./components/protectedroute"
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 

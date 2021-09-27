@@ -1,0 +1,8 @@
+.project-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; 
+    margin: auto;
+    width: 80vw; 
+    height: 40em; 
+}

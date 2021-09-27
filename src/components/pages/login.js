@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@mui/material/Button';
-import { config } from '.././config.js';
+import { config } from '../../config.js';
 
 class Login extends Component {
     
