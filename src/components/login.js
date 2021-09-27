@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@mui/material/Button';
 import { config } from '.././config.js';
 
 class Login extends Component {
@@ -14,7 +15,7 @@ class Login extends Component {
         return (
             <div className="App">
             <h1>Workdesk</h1>
-            <button onClick={this.login}>Login with Channeli</button>
+            <Button variant="contained" onClick={this.login}>Login with Channeli</Button>
             </div>
         );
     }

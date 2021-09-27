@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import Button from '@mui/material/Button';
 import axios from 'axios';
 
 class Home extends Component {
     logout = (e) => {
         e.preventDefault();
         localStorage.clear();
-        window.location.href = '/';
-        
+        axios.get('http://127.0.0.1:8000/logout',{withCredentials: true}).then(resp => {
+        console.log('Response', resp);this.props.history.push("/home");
+        });
     }
     async componentDidMount() {
         axios.defaults.withCredentials = true;
@@ -21,7 +23,7 @@ class Home extends Component {
         return (
             <div>
             <h1>Workdesk</h1>
-            <button onClick={this.logout}>Logout</button>
+            <Button variant="contained" onClick={this.logout}>Logout</Button>
             </div>
         );
     }
