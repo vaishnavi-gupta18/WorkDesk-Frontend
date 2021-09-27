@@ -8,9 +8,10 @@ class Auth extends Component {
         let code = query.get('code')
         
         
-        await axios.get('http://127.0.0.1:8000/workdesk/after_login?code='+code+'&state=state').then(resp => {
+        await axios.get('http://127.0.0.1:8000/workdesk/after_login?code='+code+'&state=state',{withCredentials: true}).then(resp => {
         console.log('Response', resp);localStorage.setItem("isAuthenticated", "true");this.props.history.push("/home");
         });
+
     }
 
     render() {
