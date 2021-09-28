@@ -4,6 +4,9 @@ import axios from 'axios';
 
 import './home.css';
 import ProjectCard from '../ui-components/card'
+// import NavBar from '../ui-components/navbar'
+import SideBar from '../ui-components/sidebar'
+import Content from '../ui-components/main'
 
 class Home extends Component {
 
@@ -38,11 +41,12 @@ class Home extends Component {
         const { projects } = this.state;
         return (
             <div className='Home'>
-            <h1>Workdesk</h1>
-            <Button variant="contained" onClick={this.logout}>Logout</Button>
-            <div className='project-container'>
-            {projects.map(item => <ProjectCard key={item.id} {...item} />)}
-            </div>
+                <SideBar />
+                <h1>Workdesk</h1>
+                <Button variant="contained" onClick={this.logout}>Logout</Button>
+                {/* <div className='project-container'>
+                    {projects.map(item => <ProjectCard key={item.id} {...item} />)}
+                </div> */}
             </div>
         );
     }
