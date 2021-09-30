@@ -33,27 +33,52 @@ export default function ProjectCard(props) {
   time = time.slice(11,16);
   const start_date = 'Created '+date+','+time
   return (
-    <Card className={classes.root} raised>
-        <CardHeader
+    // <Card className={classes.root} raised>
+    //     <CardHeader
+    //     action={
+    //         <StatusChip status={props.status} />
+    //     }
+    //     title={props.title}
+    //     subheader={start_date}
+    //   />
+    //   <CardContent>
+    //     <Typography variant="body2" color="textSecondary">
+    //         {ReactHtmlParser(description)}
+    //     </Typography>
+    //   </CardContent>
+    //   <CardActions className={classes.action}>
+    //     <IconButton style={{ color: blue[800] }} aria-label="Edit">
+    //       <EditIcon />
+    //     </IconButton>
+    //     <IconButton style={{ color: red[400] }} aria-label="Delete">
+    //       <DeleteIcon />
+    //     </IconButton>
+    //   </CardActions>
+    // </Card>
+    <Card>
+       <CardHeader
         action={
             <StatusChip status={props.status} />
         }
         title={props.title}
         subheader={start_date}
       />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary">
+       <CardContent>
+         <Typography variant="body2" color="textSecondary">
             {ReactHtmlParser(description)}
         </Typography>
-      </CardContent>
-      <CardActions className={classes.action}>
-        <IconButton style={{ color: blue[800] }} aria-label="Edit">
+       </CardContent>
+       <CardActions className={classes.action}>
+         <IconButton style={{ color: blue[800] }} aria-label="Edit">
           <EditIcon />
         </IconButton>
-        <IconButton style={{ color: red[400] }} aria-label="Delete">
+       <IconButton style={{ color: red[400] }} aria-label="Delete">
           <DeleteIcon />
-        </IconButton>
-      </CardActions>
+       </IconButton>
+       </CardActions>
+      
+
     </Card>
+
   );
 }
