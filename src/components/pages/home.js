@@ -21,7 +21,7 @@ class Home extends Component {
     logout = (e) => {
         e.preventDefault();
         localStorage.clear();
-        axios.post('http://127.0.0.1:8000/logout',{withCredentials: true}).then(resp => {
+        axios.get('http://127.0.0.1:8000/logout',{withCredentials: true}).then(resp => {
         console.log('Response', resp);this.props.history.push("/");
         });
     }

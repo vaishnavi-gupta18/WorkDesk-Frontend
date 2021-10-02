@@ -24,6 +24,7 @@ export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [memberData, setMemberData] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,12 +34,15 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  const [members, setMembers] = React.useState([]);
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [start_date, setStartDate] = React.useState('');
+  const [start_date, setStartDate] = React.useState(curTime);
+  const [members, setMembers] = React.useState([]);
   const [status, setStatus] = React.useState('In Progress');
   const [is_public, setPublic] = React.useState(true);
+
+  var today = new Date(),
+  curTime = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()  + 'Z';
 
 
   var handleTitleChange = (e) => {
@@ -75,12 +79,40 @@ export default function FormDialog() {
     }, []);
 
     const statuslist = [
-      {title : "In progress"},
+      {title : "In Progress"},
       {title : "Testing"},
       {title : "Completed"},
     ];
 
-    var SubmitData = () => {
+    async function handleSubmit(e){
+      e.preventDefault();
+      const data = {
+        title: title,
+        description: description,
+        start_date: start_date,
+        members: members,
+        status: status,
+        is_public: is_public 
+      }
+      console.log(data)
+      axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+      axios.defaults.xsrfCookieName = 'csrftoken';
+      return await axios
+            .post('http://127.0.0.1:8000/project/', data)
+            .then((res) => {
+                if(res.status === 201){
+                    console.log(res)
+                    setSubmitted(true);
+                }
+                else{
+                    console.log(res)
+                    setSubmitted(false);
+                }
+            })
+            .catch((err) => {
+                setSubmitted(false);
+                console.log(err);
+            })
     }
 
   return (
@@ -208,7 +240,7 @@ export default function FormDialog() {
          
         </DialogContent>
         <DialogActions>
-          <Button onClick={SubmitData} variant='contained' sx={{ marginBottom : 2 }}>Create</Button>
+          <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }}>Create</Button>
           <Button onClick={handleClose} sx={{ marginBottom : 2 }}>Cancel</Button>
         </DialogActions>
       </Dialog>

@@ -9,12 +9,12 @@ function colorForStatus(status) {
       return green;
     case "In Progress":
       return blue;
-    case "in progress":
-    return blue;
+    case "In progress":
+      return blue;
     case "Testing":
       return orange;
     case "testing":
-    return orange;
+      return orange;
     default:
       return grey;
   }
