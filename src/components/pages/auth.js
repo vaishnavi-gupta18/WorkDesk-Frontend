@@ -12,6 +12,10 @@ class Auth extends Component {
         console.log('Response', resp);localStorage.setItem("isAuthenticated", "true");localStorage.setItem("user", resp.data);this.props.history.push("/home");
         });
 
+        await axios.get('http://127.0.0.1:8000/member/'+localStorage.getItem("user")+'/',{withCredentials: true}).then(resp => {
+        console.log('Response', resp.data);localStorage.setItem("userData", JSON.stringify(resp.data))
+        });
+
     }
 
     render() {

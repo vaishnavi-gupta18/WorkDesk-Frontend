@@ -18,6 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
+
 export default function FormDialog() {
   const filter = createFilterOptions();
   const theme = useTheme();
@@ -47,6 +48,7 @@ export default function FormDialog() {
 
   var handleTitleChange = (e) => {
     setTitle(e.target.value);
+    console.log(JSON.parse(localStorage.getItem("userData")).id)
   }
 
   var handleDescriptionChange = (e) => {
@@ -69,7 +71,7 @@ export default function FormDialog() {
     axios
         .get('http://127.0.0.1:8000/member/')
         .then((response) => {
-            setMemberData(response.data)
+            setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
         })
         .catch((error) => console.log(error));
     }
@@ -86,6 +88,7 @@ export default function FormDialog() {
 
     async function handleSubmit(e){
       e.preventDefault();
+      members.push(JSON.parse(localStorage.getItem("userData")).id)
       const data = {
         title: title,
         description: description,
@@ -94,7 +97,6 @@ export default function FormDialog() {
         status: status,
         is_public: is_public 
       }
-      console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
@@ -149,7 +151,6 @@ export default function FormDialog() {
           <TextField
             id="datetime-local"
             type="datetime-local"
-            value={start_date}
             onChange={handleStartDate}/>
 
           
