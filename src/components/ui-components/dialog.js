@@ -15,7 +15,7 @@ const DialogModal = (props) => {
       aria-labelledby="dialog-title"
     >
       <DialogContent>
-        {props.children}
+        {props.project}
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={() => setOpen(false)} color="primary">

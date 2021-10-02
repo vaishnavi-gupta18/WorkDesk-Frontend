@@ -19,25 +19,22 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 
-export default function FormDialog() {
+const DialogModal = (props) => {
+  const { project_id, open, setOpen } = props;
   const filter = createFilterOptions();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
-
+  
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [start_date, setStartDate] = React.useState(curTime);
+  const [start_date, setStartDate] = React.useState('');
+  const [creator, setCreator] = React.useState();
   const [members, setMembers] = React.useState([]);
   const [status, setStatus] = React.useState('In Progress');
   const [is_public, setPublic] = React.useState(true);
@@ -67,7 +64,7 @@ export default function FormDialog() {
   }
 
   async function MemberData() {
-    axios
+    await axios
         .get('http://127.0.0.1:8000/member/')
         .then((response) => {
             setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
@@ -75,8 +72,38 @@ export default function FormDialog() {
         .catch((error) => console.log(error));
     }
 
+  async function ProjectData() {
+    await axios
+        .get('http://127.0.0.1:8000/home/'+props.project_id+'/')
+        .then((response) => {
+            let data = response.data;
+            setTitle(data.title);
+            setDescription(data.description);
+            setStartDate(data.start_date.slice(0,16));
+            setMembers(data.members);
+            setCreator(data.creator);
+            setStatus(data.status);
+            setValue(data.status);
+            setPublic(data.is_public);
+        })
+        .catch((error) => console.log(error));
+    }
+
+    function MemberObjects(){
+        let memberlist = []
+        members.map(item=>{
+        if(item !== (JSON.parse(localStorage.getItem("userData")).id))
+        memberData.map(member => {
+            if(member.id === item)
+            memberlist.push(member)
+            })
+        }) 
+        return memberlist
+    }
+
     React.useEffect(()=>{
-        MemberData();  
+        MemberData(); 
+        ProjectData(); 
     }, []);
 
     const statuslist = [
@@ -92,6 +119,7 @@ export default function FormDialog() {
         title: title,
         description: description,
         start_date: start_date,
+        creator: creator,
         members: members,
         status: status,
         is_public: is_public 
@@ -99,7 +127,7 @@ export default function FormDialog() {
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
-            .post('http://127.0.0.1:8000/project/', data)
+            .put('http://127.0.0.1:8000/home/'+project_id+'/', data)
             .then((res) => {
                 if(res.status === 201){
                     console.log(res)
@@ -118,11 +146,12 @@ export default function FormDialog() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
-      <AddIcon/> Add Project
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Project</DialogTitle>
+      <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+      aria-labelledby="dialog-title"
+      >
+        <DialogTitle>Edit Project</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -150,6 +179,7 @@ export default function FormDialog() {
           <TextField
             id="datetime-local"
             type="datetime-local"
+            value={start_date}
             onChange={handleStartDate}/>
 
           
@@ -157,10 +187,12 @@ export default function FormDialog() {
           <Autocomplete
             multiple
             id="members"
+            defaultValue={()=>MemberObjects()}
             options={memberData}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
             onChange={handleMemberChange}
+            filterSelectedOptions
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -240,10 +272,12 @@ export default function FormDialog() {
          
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }}>Create</Button>
+          <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }}>Edit</Button>
           <Button onClick={handleClose} sx={{ marginBottom : 2 }}>Cancel</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
+
+export default DialogModal;

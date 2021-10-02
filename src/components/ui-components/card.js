@@ -12,7 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ReactHtmlParser from 'react-html-parser';
 
 import StatusChip from './statuschip'
-import DialogModal from './dialog'
+import DialogModal from '../project/editproject'
 
 const useStyles = makeStyles({
   root: {
@@ -44,17 +44,14 @@ export default function ProjectCard(props) {
         subheader={start_date}
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary">
             {ReactHtmlParser(description)}
-          
-        </Typography>
       </CardContent>
       <CardActions className={classes.action}>
         <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
           <EditIcon />
         </IconButton>
         <DialogModal
-        content="Are you sure you want to leeeave us ?"
+        project_id={props.id}
         open={editOpen}
         setOpen={setEditOpen}
       />
