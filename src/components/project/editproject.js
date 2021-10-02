@@ -129,8 +129,9 @@ const DialogModal = (props) => {
       return await axios
             .put('http://127.0.0.1:8000/home/'+project_id+'/', data)
             .then((res) => {
-                if(res.status === 201){
+                if(res.status === 200){
                     console.log(res)
+                    setOpen(false);
                     setSubmitted(true);
                 }
                 else{

@@ -103,6 +103,7 @@ export default function FormDialog() {
             .then((res) => {
                 if(res.status === 201){
                     console.log(res)
+                    setOpen(false);
                     setSubmitted(true);
                 }
                 else{

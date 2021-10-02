@@ -13,6 +13,7 @@ import ReactHtmlParser from 'react-html-parser';
 
 import StatusChip from './statuschip'
 import DialogModal from '../project/editproject'
+import DialogDelete from '../project/deleteproject'
 
 const useStyles = makeStyles({
   root: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
 
 export default function ProjectCard(props) {
   const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const classes = useStyles();
   const description = props.description ;
   var date = props.start_date;
@@ -55,9 +57,14 @@ export default function ProjectCard(props) {
         open={editOpen}
         setOpen={setEditOpen}
       />
-        <IconButton style={{ color: red[400] }} aria-label="Delete">
+        <IconButton style={{ color: red[400] }} aria-label="Delete" onClick={() => setDeleteOpen(true)}>
           <DeleteIcon />
         </IconButton>
+        <DialogDelete
+        project_id={props.id}
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+        />
       </CardActions>
     </Card>
   );
