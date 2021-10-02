@@ -3,8 +3,7 @@
     flex-direction: column;
     justify-content: space-evenly; 
     margin: auto;
-    width: 80vw; 
-    height: 40em; 
+    width: 85vw; 
 }
 
 .nav-items {
@@ -12,5 +11,4 @@
     flex-direction: column;
     padding: 2px 2px 2px 2px;
 }
-
 

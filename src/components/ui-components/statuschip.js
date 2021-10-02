@@ -5,7 +5,7 @@ import { green, blue, grey, red, orange} from "@material-ui/core/colors";
 
 function colorForStatus(status) {
   switch (status) {
-    case "completed":
+    case "Completed":
       return green;
     case "In Progress":
       return blue;
