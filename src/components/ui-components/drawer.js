@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
+import Avatar from '@mui/material/Avatar';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -102,6 +103,7 @@ export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -136,6 +138,9 @@ export default function PersistentDrawerLeft(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <IconButton color="inherit">
+            <Avatar>{name}</Avatar>
+            </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open} >
@@ -161,7 +166,16 @@ export default function PersistentDrawerLeft(props) {
           { secondaryListItems }
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            p: 3,
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}>
         <DrawerHeader />
         {props.children}
       </Box>

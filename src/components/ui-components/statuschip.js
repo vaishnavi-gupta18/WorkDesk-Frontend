@@ -25,7 +25,7 @@ function StatusChip({ status }) {
     <Chip
       label={status}
     //   avatar={status === "completed" && <DoneIcon style={{ color: "white" }} />}
-      style={{ backgroundColor: colorForStatus(status)[300], color: "white" }}
+      style={{ backgroundColor: colorForStatus(status)[500], color: "white" }}
     />
   );
 }

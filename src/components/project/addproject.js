@@ -17,6 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import Snackbar from '@mui/material/Snackbar';
 
 
 export default function FormDialog() {
@@ -105,6 +106,7 @@ export default function FormDialog() {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
+                    window.location.reload();
                 }
                 else{
                     console.log(res)
@@ -245,6 +247,12 @@ export default function FormDialog() {
           <Button onClick={handleClose} sx={{ marginBottom : 2 }}>Cancel</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={submitted}
+        autoHideDuration={6000}
+        message="Project Created"
+        // action={action}
+      />
     </div>
   );
 }

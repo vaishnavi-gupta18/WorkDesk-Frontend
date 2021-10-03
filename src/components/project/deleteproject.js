@@ -7,8 +7,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Snackbar from '@mui/material/Snackbar';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useHistory } from "react-router";
 
 
 
@@ -16,7 +16,6 @@ const DialogDelete = (props) => {
     const { project_id, open, setOpen } = props;
     const [title, setTitle] = React.useState('');
     const [submitted, setSubmitted] = useState(false);
-    let history = useHistory();
 
     const handleClose = () => {
         setOpen(false);
@@ -46,7 +45,7 @@ const DialogDelete = (props) => {
                     console.log(res)
                     setSubmitted(true);
                     setOpen(false);
-                    history.push('/home');
+                    window.location.reload();
                 }
                 else{
                     console.log(res)
@@ -75,6 +74,11 @@ const DialogDelete = (props) => {
           <Button onClick={handleClose} sx={{ marginBottom : 2 } } style={{ color: grey[600] }}>Cancel</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={submitted}
+        autoHideDuration={6000}
+        message="Project Deleted"
+      />
     </div>
   );
 };

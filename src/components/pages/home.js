@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 
 import './home.css';
-import ProjectCard from '../ui-components/card'
+import ProjectCard from '../ui-components/projectCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
 import FormDialog from '../project/addproject'
 // import RegisterYourCatForm from '../project/test'

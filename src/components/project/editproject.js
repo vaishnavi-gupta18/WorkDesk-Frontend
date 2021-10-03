@@ -133,6 +133,7 @@ const DialogModal = (props) => {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
+                    window.location.reload();
                 }
                 else{
                     console.log(res)

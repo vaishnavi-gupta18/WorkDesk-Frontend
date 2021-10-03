@@ -1,0 +1,113 @@
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import { red, blue } from "@material-ui/core/colors";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from '@mui/material/Tooltip';
+import Stack from '@mui/material/Stack'
+import ReactHtmlParser from 'react-html-parser';
+import { useHistory } from 'react-router-dom';
+
+import StatusChip from './statuschip'
+import DialogModal from '../project/editproject'
+import DialogDelete from '../project/deleteproject'
+import MemberChip from './memberChip'
+
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 1000,
+    background: 'linear-gradient( rgb(255 255 255) 30%, rgb(245 249 255) 90%)',
+    borderRadius: 12,
+    marginTop: 10,
+  },
+  action: {
+      justifyContent: 'space-between'
+  }
+});
+
+
+export default function TasksCard(props) {
+  const history = useHistory();
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [memberData, setMemberData] = useState([]);
+  const classes = useStyles();
+
+  var date = props.due_date;
+  date = date.slice(0,10);
+  var time = props.due_date;
+  time = time.slice(11,16);
+  const due_date= 'Due '+date+', '+time+'';
+
+
+  async function MemberData() {
+    axios
+        .get('http://127.0.0.1:8000/member/')
+        .then((response) => {
+            setMemberData(response.data)
+        })
+        .catch((error) => console.log(error));
+    }
+
+    React.useEffect(()=>{
+        MemberData();  
+    }, []);
+
+  return (
+    <Card className={classes.root} sx={{ margin:3 }}>
+        <CardHeader
+        onClick={() => history.push('/'+props.id)}
+        action={
+        <Stack direction="row" spacing={1}>
+            <Tooltip title="Edit">
+            <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
+            <EditIcon />
+            </IconButton>
+            </Tooltip>
+            
+            <Tooltip title="Delete">
+            <IconButton style={{ color: red[400] }} aria-label="Delete" onClick={() => setDeleteOpen(true)}>
+            <DeleteIcon />
+            </IconButton>
+            </Tooltip>
+        </Stack>
+                
+        }
+        title={props && props.title}
+        subheader={due_date}
+      />
+      {/* <CardContent>
+            {ReactHtmlParser(props.description)}
+      </CardContent> */}
+      <CardActions className={classes.action}>
+      {/* <Stack direction="row" spacing={1}>
+      {props.members && props.members.map(item=>{
+        return memberData.map(member => {
+            if(member.id === item)
+            return (<MemberChip key={member.id} {...member}/>)
+            })
+        })} 
+      </Stack> */}
+      {/* <DialogModal
+        project_id={props.id}
+        open={editOpen}
+        setOpen={setEditOpen}
+      />
+      <DialogDelete
+        project_id={props.id}
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+        /> */}
+
+      
+      </CardActions>
+    </Card>
+  );
+}
