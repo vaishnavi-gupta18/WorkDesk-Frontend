@@ -6,6 +6,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
+import Collapse from '@mui/material/Collapse';
+import StepContent from '@mui/material/StepContent';
 import IconButton from "@material-ui/core/IconButton";
 import { red, blue } from "@material-ui/core/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -13,23 +15,30 @@ import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack'
 import ReactHtmlParser from 'react-html-parser';
+import Avatar  from "@mui/material/Avatar";
+import AvatarGroup  from "@mui/material/AvatarGroup";
 import { useHistory } from 'react-router-dom';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import StatusChip from './statuschip'
 import DialogModal from '../project/editproject'
 import DialogDelete from '../project/deleteproject'
 import MemberChip from './memberChip'
+import { CardActionArea } from "@mui/material";
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 1000,
     background: 'linear-gradient( rgb(255 255 255) 30%, rgb(245 249 255) 90%)',
-    borderRadius: 12,
+    borderRadius: 5,
     marginTop: 10,
   },
   action: {
       justifyContent: 'space-between'
-  }
+  },
 });
 
 
@@ -38,6 +47,7 @@ export default function TasksCard(props) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [memberData, setMemberData] = useState([]);
+  const [expanded, setExpand] = useState(false)
   const classes = useStyles();
 
   var date = props.due_date;
@@ -61,11 +71,11 @@ export default function TasksCard(props) {
     }, []);
 
   return (
-    <Card className={classes.root} sx={{ margin:3 }}>
+    <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)}>
         <CardHeader
-        onClick={() => history.push('/'+props.id)}
+        className={classes.header}
         action={
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={0}>
             <Tooltip title="Edit">
             <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
             <EditIcon />
@@ -77,36 +87,27 @@ export default function TasksCard(props) {
             <DeleteIcon />
             </IconButton>
             </Tooltip>
-        </Stack>
-                
+        </Stack>       
         }
         title={props && props.title}
         subheader={due_date}
       />
-      {/* <CardContent>
-            {ReactHtmlParser(props.description)}
-      </CardContent> */}
-      <CardActions className={classes.action}>
-      {/* <Stack direction="row" spacing={1}>
-      {props.members && props.members.map(item=>{
-        return memberData.map(member => {
-            if(member.id === item)
-            return (<MemberChip key={member.id} {...member}/>)
-            })
-        })} 
-      </Stack> */}
-      {/* <DialogModal
-        project_id={props.id}
-        open={editOpen}
-        setOpen={setEditOpen}
-      />
-      <DialogDelete
-        project_id={props.id}
-        open={deleteOpen}
-        setOpen={setDeleteOpen}
-        /> */}
-
-      
+      <Collapse in={expanded} timeout="auto">
+       <CardContent>
+            {ReactHtmlParser(props.description)} 
+        </CardContent>
+        </Collapse>
+      <CardActions>
+      <Stack spacing={1} direction="row">
+        <AvatarGroup max={1}>
+        {props && props.assignees.map(item=>{
+          return memberData.map(member => {
+              if(member.id === item)
+              return (<Tooltip title={member.fullname}><Avatar>{member.fullname.slice(0,1)}</Avatar></Tooltip>)
+              })
+          })} 
+        </AvatarGroup>
+      </Stack>
       </CardActions>
     </Card>
   );

@@ -10,15 +10,34 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import { red, blue, grey } from "@material-ui/core/colors";
+import { Stack } from "@mui/material";
+
+
 
 import './home.css';
+import AddList from "../list/addlist";
+import AddCard from "../card/addCard";
 import ProjectAccordion from "../ui-components/projectAccordion";
+import ListMenu from "../ui-components/test"
 import TaskCard from "../ui-components/taskCard"
+
+import EditDeleteList from "../list/editDeleteList";
 
 
 export default function ProjectDetails() {
     const { id } = useParams();
     const [projectData, setProjectData] = useState(null);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
 
     const Item = styled(Paper)(({ theme }) => ({
         ...theme.typography.body2,
@@ -53,24 +72,27 @@ export default function ProjectDetails() {
             <ProjectAccordion data={projectData}/>
             </div>
             <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={5} sx={{ marginTop:0 }}>
+            <Grid container spacing={4} sx={{ marginTop:0 }}>
                 {projectData && projectData.lists.map(item=> {
                     return (
-                        <Grid item xs={4} >
+                        <Grid item xs={3}>
+                        <Stack direction="row" spacing={15}>
                         <Item>{item.title}</Item>
+                        <EditDeleteList key={item.id}{...item}/>
+                        </Stack>
                         {item.cards.map(card => (
                             <TaskCard key={card.id} {...card}/>
                         )
                         )}
+                        <AddCard id={item.id}/>
                         </Grid>
                     )
                 })}
-                
-               
             </Grid>
             </Box>
 
             </PersistentDrawerLeft>
+            <AddList project_id={id}/>
             
             </div>
         );

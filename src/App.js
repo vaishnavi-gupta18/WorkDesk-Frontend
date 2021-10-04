@@ -3,6 +3,7 @@ import React from 'react';
 import Login from "./components/pages/login"
 import Auth from "./components/pages/auth"
 import Home from "./components/pages/home"
+import Users from "./components/pages/users"
 import ProjectDetails from "./components/pages/projectdetails"
 import ProtectedRoute from "./components/protectedroute"
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
@@ -29,6 +30,7 @@ function App() {
         <Route exact path="/" component={Login} />
         <Route path="/auth" component={Auth} />
         <ProtectedRoute path="/home" component={Home} />
+        <ProtectedRoute path="/users" component={Users} />
         <ProtectedRoute exact path="/:id?" component={ProjectDetails} />
       </Switch>
   </Router>

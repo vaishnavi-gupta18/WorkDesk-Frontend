@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactQuill from 'react-quill';  
 import axios from 'axios';
 import 'react-quill/dist/quill.snow.css';
-import {modules, formats} from './richtextfield'
+import {modules, formats} from '../project/richtextfield'
 import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -20,8 +20,7 @@ import Switch from '@mui/material/Switch';
 import Snackbar from '@mui/material/Snackbar';
 
 
-export default function FormDialog() {
-  const filter = createFilterOptions();
+export default function AddCard(props){
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
@@ -39,39 +38,33 @@ export default function FormDialog() {
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [start_date, setStartDate] = React.useState(curTime);
-  const [members, setMembers] = React.useState([]);
-  const [status, setStatus] = React.useState('In Progress');
-  const [is_public, setPublic] = React.useState(true);
+  const [due_date, setDueDate] = React.useState(curTime);
+  const [assignees, setAssignees] = React.useState([]);
 
   var today = new Date(),
   curTime = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()  + 'Z';
-
-
-  var handleTitleChange = (e) => {
-    setTitle(e.target.value);
-  }
 
   var handleDescriptionChange = (e) => {
     setDescription(e)
   }
 
-  var handleMemberChange = (e,value) => {
-    setMembers(value.map(item=>item.id));
+  var handleAssigneeChange = (e,value) => {
+    setAssignees(value.map(item=>item.id));
+  }
+
+  var handleDueDate = (e) => {
+    setDueDate(e.target.value)
   }
 
   var handleStartDate = (e) => {
     setStartDate(e.target.value)
   }
 
-  var handlePublicChange = (e) => {
-    setPublic(e.target.checked)
-  }
-
   async function MemberData() {
     axios
         .get('http://127.0.0.1:8000/member/')
         .then((response) => {
-            setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
+            setMemberData(response.data)
         })
         .catch((error) => console.log(error));
     }
@@ -80,27 +73,21 @@ export default function FormDialog() {
         MemberData();  
     }, []);
 
-    const statuslist = [
-      {title : "In Progress"},
-      {title : "Testing"},
-      {title : "Completed"},
-    ];
-
     async function handleSubmit(e){
       e.preventDefault();
-      members.push(JSON.parse(localStorage.getItem("userData")).id)
       const data = {
         title: title,
         description: description,
         start_date: start_date,
-        members: members,
-        status: status,
-        is_public: is_public 
+        due_date: due_date,
+        assignees: assignees,
+        list: props.id
       }
+      console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
-            .post('http://127.0.0.1:8000/project/', data)
+            .post('http://127.0.0.1:8000/List/'+props.id+'/card/', data)
             .then((res) => {
                 if(res.status === 201){
                     console.log(res)
@@ -121,11 +108,11 @@ export default function FormDialog() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
-      <AddIcon/> Add Project
+      <Button variant="standard" onClick={handleClickOpen}>
+        <AddIcon/> Add Card
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Project</DialogTitle>
+        <DialogTitle>Add Card</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -134,7 +121,7 @@ export default function FormDialog() {
             id="title"
             label="Title"
             value={title}
-            onChange={handleTitleChange}
+            onChange={(e) => setTitle(e.target.value)}
             fullWidth
             variant="standard"
           />
@@ -155,91 +142,31 @@ export default function FormDialog() {
             type="datetime-local"
             onChange={handleStartDate}/>
 
+          <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Due Date</InputLabel>
+          <TextField
+            id="datetime-local"
+            type="datetime-local"
+            onChange={handleDueDate}/>
+
           
           <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
           <Autocomplete
             multiple
-            id="members"
+            id="assignees"
             options={memberData}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
-            onChange={handleMemberChange}
+            onChange={handleAssigneeChange}
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
-                label="Members"
-                placeholder="Select project members"
+                label="Assignees"
+                placeholder="Assign card to members"
               />
             )}
           />
           </Stack>
-
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
-          <Autocomplete
-            value={value}
-            onChange={(event, newValue) => {
-              if (typeof newValue === 'string') {
-                setValue({
-                  title: newValue,
-                });
-                setStatus(newValue)
-              } else if (newValue && newValue.inputValue) {
-                // Create a new value from the user input
-                setValue({
-                  title: newValue.inputValue,
-                });
-                setStatus(newValue.inputValue)
-              } else {
-                setValue(newValue);
-                if(newValue === null)
-                setStatus('')
-                else
-                setStatus(newValue.title)
-              }
-            }}
-
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              const { inputValue } = params;
-              // Suggest the creation of a new value
-              const isExisting = options.some((option) => inputValue === option.title);
-              if (inputValue !== '' && !isExisting) {
-                filtered.push({
-                  inputValue,
-                  title: `Add "${inputValue}"`,
-                });
-              }
-              return filtered;
-            }}
-
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            id="status"
-            options={statuslist}
-            getOptionLabel={(option) => {
-              // Value selected with enter, right from the input
-              if (typeof option === 'string') {
-                return option;
-              }
-              // Add "xxx" option created dynamically
-              if (option.inputValue) {
-                return option.inputValue;
-              }
-              // Regular option
-              return option.title;
-            }}
-            renderOption={(props, option) => <li {...props}>{option.title}</li>}
-            sx={{ width: 300 }}
-            freeSolo
-            renderInput={(params) => (
-              <TextField {...params} label="Status" />
-            )}
-          />
-          </Stack>
-
-          <FormControlLabel control={<Switch defaultChecked onChange={handlePublicChange}/>} label="Public" />
          
         </DialogContent>
         <DialogActions>
@@ -250,7 +177,7 @@ export default function FormDialog() {
       <Snackbar
         open={submitted}
         autoHideDuration={6000}
-        message="Project Created"
+        message="Card Created"
       />
     </div>
   );

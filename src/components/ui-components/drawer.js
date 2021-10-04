@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Redirect } from 'react-router-dom'
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +15,9 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
+import Logout from '@mui/icons-material/Logout';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -100,6 +105,16 @@ const useStyles = makeStyles(theme => ({
   }));
 
 export default function PersistentDrawerLeft(props) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuopen = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -112,6 +127,15 @@ export default function PersistentDrawerLeft(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  function logout(e){
+    e.preventDefault();
+    localStorage.clear();
+    axios.get('http://127.0.0.1:8000/logout',{withCredentials: true}).then(resp => {
+    console.log('Response', resp);
+    window.location = "/";
+    });
+}
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -138,9 +162,29 @@ export default function PersistentDrawerLeft(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
-            <Avatar>{name}</Avatar>
+            <IconButton color="inherit"
+            id="basic-button" 
+            aria-controls="basic-menu"
+            aria-haspopup="true"
+            aria-expanded={menuopen ? 'true' : undefined}
+            onClick={handleClick}>
+            <Avatar>
+              {name}
+            </Avatar>
             </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={menuopen}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={logout}> <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open} >
