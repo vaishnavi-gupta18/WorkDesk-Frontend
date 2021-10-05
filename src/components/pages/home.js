@@ -6,7 +6,7 @@ import axios from 'axios';
 import './home.css';
 import ProjectCard from '../ui-components/projectCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
-import FormDialog from '../project/addproject'
+import AddProject from '../project/addproject'
 // import RegisterYourCatForm from '../project/test'
 
 
@@ -72,7 +72,7 @@ class Home extends Component {
                 </div>
                 <Button variant="contained" onClick={this.logout}>Logout</Button>
             </PersistentDrawerLeft>
-            <FormDialog/>
+            <AddProject/>
             
             </div>
         );

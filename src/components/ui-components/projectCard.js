@@ -16,8 +16,8 @@ import ReactHtmlParser from 'react-html-parser';
 import { useHistory } from 'react-router-dom';
 
 import StatusChip from './statuschip'
-import DialogModal from '../project/editproject'
-import DialogDelete from '../project/deleteproject'
+import EditProject from '../project/editproject'
+import DeleteProject from '../project/deleteproject'
 import MemberChip from './memberChip'
 
 const useStyles = makeStyles({
@@ -88,7 +88,7 @@ export default function ProjectCard(props) {
           <EditIcon />
         </IconButton>
         </Tooltip>
-        <DialogModal
+        <EditProject
         project_id={props.id}
         open={editOpen}
         setOpen={setEditOpen}
@@ -98,7 +98,7 @@ export default function ProjectCard(props) {
           <DeleteIcon />
         </IconButton>
       </Tooltip>
-        <DialogDelete
+        <DeleteProject
         project_id={props.id}
         open={deleteOpen}
         setOpen={setDeleteOpen}

@@ -28,6 +28,8 @@ import DialogModal from '../project/editproject'
 import DialogDelete from '../project/deleteproject'
 import MemberChip from './memberChip'
 import { CardActionArea } from "@mui/material";
+import EditCard from '../card/editCard'
+import DeleteCard from '../card/deleteCard'
 
 const useStyles = makeStyles({
   root: {
@@ -99,7 +101,7 @@ export default function TasksCard(props) {
         </Collapse>
       <CardActions>
       <Stack spacing={1} direction="row">
-        <AvatarGroup max={1}>
+        <AvatarGroup max={2}>
         {props && props.assignees.map(item=>{
           return memberData.map(member => {
               if(member.id === item)
@@ -108,7 +110,20 @@ export default function TasksCard(props) {
           })} 
         </AvatarGroup>
       </Stack>
+
+      <EditCard
+        data = {props}
+        open={editOpen}
+        setOpen={setEditOpen}
+      />
+      <DeleteCard
+        data = {props}
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+      />
       </CardActions>
+
+          
     </Card>
   );
 }

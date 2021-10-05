@@ -81,10 +81,10 @@ export default function ProjectDetails() {
                         <EditDeleteList key={item.id}{...item}/>
                         </Stack>
                         {item.cards.map(card => (
-                            <TaskCard key={card.id} {...card}/>
+                            <TaskCard key={card.id} {...card} projectMembers={projectData.members} projectLists={projectData.lists}/>
                         )
                         )}
-                        <AddCard id={item.id}/>
+                        <AddCard id={item.id} projectMembers={projectData.members}/>
                         </Grid>
                     )
                 })}

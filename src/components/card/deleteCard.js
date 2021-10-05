@@ -13,33 +13,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const DeleteProject = (props) => {
-    const { project_id, open, setOpen } = props;
-    const [title, setTitle] = React.useState('');
+    const { data, open, setOpen } = props;
     const [submitted, setSubmitted] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
     };
-
-    async function ProjectData() {
-        await axios
-            .get('http://127.0.0.1:8000/home/'+props.project_id+'/')
-            .then((response) => {
-                setTitle(response.data.title);
-            })
-            .catch((error) => console.log(error));
-        }
-    
-        React.useEffect(()=>{
-            ProjectData(); 
-        }, []);
   
     async function handleSubmit(e){
       e.preventDefault();
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
-            .delete('http://127.0.0.1:8000/home/'+project_id+'/')
+            .delete('http://127.0.0.1:8000/List/'+data.list+'/card/'+data.id+'/')
             .then((res) => {
                 if(res.status === 204){
                     console.log(res)
@@ -65,9 +51,9 @@ const DeleteProject = (props) => {
       onClose={() => setOpen(false)}
       aria-labelledby="dialog-title"
       >
-        <DialogTitle>Delect Project</DialogTitle>
+        <DialogTitle>Delect Card</DialogTitle>
         <DialogContent>
-         Are you sure you want to delete {title} ?
+         Are you sure you want to delete {data.title} ?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }} style={{ backgroundColor: red[400] }}>Delete</Button>
@@ -77,7 +63,7 @@ const DeleteProject = (props) => {
       <Snackbar
         open={submitted}
         autoHideDuration={6000}
-        message="Project Deleted"
+        message="Card Deleted"
       />
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactQuill from 'react-quill';  
 import axios from 'axios';
 import 'react-quill/dist/quill.snow.css';
-import {modules, formats} from './richtextfield'
+import {modules, formats} from '../project/richtextfield'
 import { useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -14,13 +14,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import AddIcon from '@mui/icons-material/Add';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 
-const EditProject = (props) => {
-  const { project_id, open, setOpen } = props;
+const EditCard = (props) => {
+  const { data, open, setOpen } = props;
   const filter = createFilterOptions();
   const theme = useTheme();
   const [value, setValue] = React.useState('');
@@ -33,11 +36,10 @@ const EditProject = (props) => {
   
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [start_date, setStartDate] = React.useState('');
-  const [creator, setCreator] = React.useState();
-  const [members, setMembers] = React.useState([]);
-  const [status, setStatus] = React.useState('In Progress');
-  const [is_public, setPublic] = React.useState(true);
+  const [start_date, setStartDate] = React.useState(curTime);
+  const [due_date, setDueDate] = React.useState(curTime);
+  const [assignees, setAssignees] = React.useState([]);
+  const [list,setList] = React.useState('');
 
   var today = new Date(),
   curTime = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()  + 'Z';
@@ -51,83 +53,86 @@ const EditProject = (props) => {
     setDescription(e)
   }
 
-  var handleMemberChange = (e,value) => {
-    setMembers(value.map(item=>item.id));
+  var handleAssigneeChange = (e,value) => {
+    setAssignees(value.map(item=>item.id));
+  }
+
+  var handleListChange = (e,value) => {
+    if(value !== null)
+    setList(value.id)
   }
 
   var handleStartDate = (e) => {
     setStartDate(e.target.value)
   }
 
-  var handlePublicChange = (e) => {
-    setPublic(e.target.checked)
+  var handleDueDate = (e) => {
+    setDueDate(e.target.value)
   }
-
+  
   async function MemberData() {
     await axios
         .get('http://127.0.0.1:8000/member/')
         .then((response) => {
-            setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
+            let memberlist = []
+            props.data.projectMembers.map(item=>{
+                response.data.map(member => {
+                    if(member.id === item)
+                    memberlist.push(member)
+                    })
+                }) 
+            setMemberData(memberlist)
+            
         })
         .catch((error) => console.log(error));
     }
 
-  async function ProjectData() {
-    await axios
-        .get('http://127.0.0.1:8000/home/'+props.project_id+'/')
-        .then((response) => {
-            let data = response.data;
-            setTitle(data.title);
-            setDescription(data.description);
-            setStartDate(data.start_date.slice(0,16));
-            setMembers(data.members);
-            setCreator(data.creator);
-            setStatus(data.status);
-            setValue(data.status);
-            setPublic(data.is_public);
-        })
-        .catch((error) => console.log(error));
-    }
-
-    function MemberObjects(){
-        let memberlist = []
-        members.map(item=>{
-        if(item !== (JSON.parse(localStorage.getItem("userData")).id))
+    function CardAssigneesObjects(){
+        let assigneelist = []
+        props.data.assignees.map(item=>{
         memberData.map(member => {
             if(member.id === item)
-            memberlist.push(member)
+            assigneelist.push(member)
             })
         }) 
-        return memberlist
+        return assigneelist
+    }
+
+    function ListObjects(){
+        let listobject
+        props.data.projectLists.map(item => {
+            if(item.id === props.data.list) 
+            listobject = item})
+        return listobject        
     }
 
     React.useEffect(()=>{
         MemberData(); 
-        ProjectData(); 
-    }, []);
+        setTitle(props.data.title);
+        setDescription(props.data.description);
+        setStartDate(props.data.start_date.slice(0,16))
+        setDueDate(props.data.due_date.slice(0,16))
+        setAssignees(props.data.assignees)
+        setList(props.data.list)
 
-    const statuslist = [
-      {title : "In Progress"},
-      {title : "Testing"},
-      {title : "Completed"},
-    ];
+    }, []);
 
     async function handleSubmit(e){
       e.preventDefault();
-      members.push(JSON.parse(localStorage.getItem("userData")).id)
       const data = {
         title: title,
         description: description,
         start_date: start_date,
-        creator: creator,
-        members: members,
-        status: status,
-        is_public: is_public 
+        due_date: due_date,
+        creator: props.data.creator,
+        assignees: assignees,
+        list: list, 
       }
+      console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
-            .put('http://127.0.0.1:8000/home/'+project_id+'/', data)
+            .put('http://127.0.0.1:8000/List/'+props.data.list+'/card/'+props.data.id+'/', data)
             .then((res) => {
                 if(res.status === 200){
                     console.log(res)
@@ -153,7 +158,7 @@ const EditProject = (props) => {
       onClose={() => setOpen(false)}
       aria-labelledby="dialog-title"
       >
-        <DialogTitle>Edit Project</DialogTitle>
+        <DialogTitle>{props && props.data.title}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -184,93 +189,52 @@ const EditProject = (props) => {
             value={start_date}
             onChange={handleStartDate}/>
 
+          <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Due Date</InputLabel>
+          <TextField
+            id="datetime-local"
+            type="datetime-local"
+            value={due_date}
+            onChange={handleDueDate}/>
+
           
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+           <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
           <Autocomplete
             multiple
-            id="members"
-            defaultValue={()=>MemberObjects()}
+            id="assignees"
+            defaultValue={()=>CardAssigneesObjects()}
             options={memberData}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
-            onChange={handleMemberChange}
-            filterSelectedOptions
+            onChange={handleAssigneeChange}
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="outlined"
-                label="Members"
-                placeholder="Select project members"
+                label="Assignees"
+                placeholder="Assign the task"
               />
             )}
           />
           </Stack>
 
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+           <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
           <Autocomplete
-            value={value}
-            onChange={(event, newValue) => {
-              if (typeof newValue === 'string') {
-                setValue({
-                  title: newValue,
-                });
-                setStatus(newValue)
-              } else if (newValue && newValue.inputValue) {
-                // Create a new value from the user input
-                setValue({
-                  title: newValue.inputValue,
-                });
-                setStatus(newValue.inputValue)
-              } else {
-                setValue(newValue);
-                if(newValue === null)
-                setStatus('')
-                else
-                setStatus(newValue.title)
-              }
-            }}
-
-            filterOptions={(options, params) => {
-              const filtered = filter(options, params);
-              const { inputValue } = params;
-              // Suggest the creation of a new value
-              const isExisting = options.some((option) => inputValue === option.title);
-              if (inputValue !== '' && !isExisting) {
-                filtered.push({
-                  inputValue,
-                  title: `Add "${inputValue}"`,
-                });
-              }
-              return filtered;
-            }}
-
             selectOnFocus
             clearOnBlur
+            required
             handleHomeEndKeys
-            id="status"
-            options={statuslist}
-            getOptionLabel={(option) => {
-              // Value selected with enter, right from the input
-              if (typeof option === 'string') {
-                return option;
-              }
-              // Add "xxx" option created dynamically
-              if (option.inputValue) {
-                return option.inputValue;
-              }
-              // Regular option
-              return option.title;
-            }}
-            renderOption={(props, option) => <li {...props}>{option.title}</li>}
+            id="lists"
+            defaultValue={()=>ListObjects()}
+            options={props.data.projectLists}
+            getOptionLabel={(option) => typeof option === 'object'? option.title : "" } 
+            onChange={handleListChange}
             sx={{ width: 300 }}
-            freeSolo
             renderInput={(params) => (
-              <TextField {...params} label="Status" />
+              <TextField {...params} label="List" required/>
             )}
           />
-          </Stack>
+          </Stack> 
 
-          <FormControlLabel control={<Switch defaultChecked onChange={handlePublicChange}/>} label="Public" />
          
         </DialogContent>
         <DialogActions>
@@ -282,4 +246,4 @@ const EditProject = (props) => {
   );
 };
 
-export default EditProject;
+export default EditCard;

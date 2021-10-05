@@ -56,7 +56,7 @@ export default function EditDeleteList(props) {
   React.useEffect(()=>{
         setTitle(props.title);
         setStartDate(props.start_date.slice(0,16));
-    },props);
+    },[]);
 
     async function handleEdit(e){
         e.preventDefault();

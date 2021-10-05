@@ -23,7 +23,6 @@ import Snackbar from '@mui/material/Snackbar';
 export default function AddCard(props){
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
@@ -72,6 +71,17 @@ export default function AddCard(props){
     React.useEffect(()=>{
         MemberData();  
     }, []);
+
+    function MemberObjects(){
+      let memberlist = []
+      props.projectMembers.map(item=>{
+      memberData.map(member => {
+          if(member.id === item)
+          memberlist.push(member)
+          })
+      }) 
+      return memberlist
+  }
 
     async function handleSubmit(e){
       e.preventDefault();
@@ -153,7 +163,7 @@ export default function AddCard(props){
           <Autocomplete
             multiple
             id="assignees"
-            options={memberData}
+            options={MemberObjects()}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
             onChange={handleAssigneeChange}
