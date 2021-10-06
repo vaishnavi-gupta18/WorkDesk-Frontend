@@ -25,6 +25,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListSubheader from '@mui/material/ListSubheader';
+
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { mainListItems, secondaryListItems } from '../ui-components/listItems'
@@ -118,6 +121,7 @@ export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [cardData, setCardData] = React.useState([]);
   const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
 
   const handleDrawerOpen = () => {
@@ -136,6 +140,30 @@ export default function PersistentDrawerLeft(props) {
     window.location = "/";
     });
 }
+
+  async function CardData() {
+        axios.defaults.withCredentials = true;
+        axios
+            .get('http://127.0.0.1:8000/usercard/', { withCredentials:true })
+            .then((response) => {
+                if(response.status == 200)
+                    {const sorted = [...response.data].sort((a, b) => b['id'] - a['id']);
+                    if(sorted.length > 3)
+                    {
+                        sorted.length = 4;
+                        setCardData(sorted)
+                    }
+                    else
+                    setCardData(sorted)
+                        
+                }
+            })
+            .catch((error) => console.log(error));
+        }
+        
+        React.useEffect(()=>{
+            CardData();
+        }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -199,15 +227,16 @@ export default function PersistentDrawerLeft(props) {
         </List>
         <Divider />
         <List>
-          {/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))} */}
-          { secondaryListItems }
+          <ListSubheader inset>My Tasks</ListSubheader>
+          {cardData && cardData.map(item => {
+            return(
+             <ListItem button>
+             <ListItemIcon>
+               <AssignmentIcon />
+             </ListItemIcon>
+             <ListItemText primary={item.title} />
+           </ListItem>
+          )})}
         </List>
       </Drawer>
       <Box component="main" sx={{

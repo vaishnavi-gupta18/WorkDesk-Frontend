@@ -79,7 +79,7 @@ export default function ProjectItem(props) {
                 <IconButton aria-label="delete" sx={{opacity:0.5,'&:hover, &:focus': {opacity : 0.8}}} onClick={() => setDeleteOpen(true)}>
                   <DeleteIcon />
                 </IconButton>
-                <EditProject
+                <DeleteProject
                     project_id={props.id}
                     open={deleteOpen}
                     setOpen={setDeleteOpen}

@@ -18,6 +18,7 @@ import ReactHtmlParser from 'react-html-parser';
 import Avatar  from "@mui/material/Avatar";
 import AvatarGroup  from "@mui/material/AvatarGroup";
 import { useHistory } from 'react-router-dom';
+import Chip from '@material-ui/core/Chip'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -45,7 +46,6 @@ const useStyles = makeStyles({
 
 
 export default function TasksCard(props) {
-  const history = useHistory();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [memberData, setMemberData] = useState([]);
@@ -70,6 +70,7 @@ export default function TasksCard(props) {
 
     React.useEffect(()=>{
         MemberData();  
+        console.log(props.projectLists)
     }, []);
 
   return (
@@ -95,7 +96,7 @@ export default function TasksCard(props) {
         subheader={due_date}
       />
       <Collapse in={expanded} timeout="auto">
-       <CardContent>
+       <CardContent onClick={() => setEditOpen(true)}>
             {ReactHtmlParser(props.description)} 
         </CardContent>
         </Collapse>
@@ -109,6 +110,9 @@ export default function TasksCard(props) {
               })
           })} 
         </AvatarGroup>
+        {props && props.listTitle && 
+        <Chip label={props.listTitle}/>
+        }
       </Stack>
 
       <EditCard

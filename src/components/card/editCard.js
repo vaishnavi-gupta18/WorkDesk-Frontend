@@ -89,7 +89,7 @@ const EditCard = (props) => {
 
     function CardAssigneesObjects(){
         let assigneelist = []
-        props.data.assignees.map(item=>{
+        props && props.data.assignees.map(item=>{
         memberData.map(member => {
             if(member.id === item)
             assigneelist.push(member)
@@ -98,9 +98,10 @@ const EditCard = (props) => {
         return assigneelist
     }
 
-    function ListObjects(){
+    function ListObjects(){ 
         let listobject
-        props.data.projectLists.map(item => {
+        console.log(props)
+        props && props.data.projectLists.map(item => {
             if(item.id === props.data.list) 
             listobject = item})
         return listobject        

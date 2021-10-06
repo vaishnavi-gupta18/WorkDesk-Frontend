@@ -19,7 +19,7 @@ import Settings from '@mui/icons-material/Settings';
 import People from '@mui/icons-material/People';
 import PermMedia from '@mui/icons-material/PermMedia';
 import Dns from '@mui/icons-material/Dns';
-import axios from 'axios';
+
 import ReactHtmlParser from 'react-html-parser';
 import Public from '@mui/icons-material/Public';
 import ProjectItem from './projectitem'
@@ -48,7 +48,7 @@ const FireNav = styled(List)({
 export default function CustomizedList(props) {
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       <ThemeProvider
         theme={createTheme({
           components: {
@@ -65,8 +65,8 @@ export default function CustomizedList(props) {
           },
         })}
       >
-        <Paper elevation={0} sx={{ maxWidth: '100%'}}>
-          <FireNav component="nav" disablePadding>
+        <Paper elevation={0} sx={{ minWidth: '100%'}}>
+          <FireNav component="nav" sx={{ maxWidth: '100%'}} disablePadding>
           <ListItem component="div" disablePadding>
             <ListItemButton>
               <ListItemIcon sx={{ fontSize: 20 }}><LayersIcon /></ListItemIcon>
@@ -100,16 +100,17 @@ export default function CustomizedList(props) {
             <Divider />
             <List
                 sx={{
-                    width: '100%',
+                    width: '30%',
                     overflowY: 'auto',
                     overflowX: 'hidden',
-                    maxHeight: '50vh',
+                    maxHeight: '78vh'
                 }}
                 >
            {props && props.projectData.map(item => {
                return (<ProjectItem key={item.id} {...item}/>)
            }) }
            </List>
+           
           </FireNav>
         </Paper>
       </ThemeProvider>
