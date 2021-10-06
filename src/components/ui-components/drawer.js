@@ -30,7 +30,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { mainListItems, secondaryListItems } from '../ui-components/listItems'
+import { mainListItems } from '../ui-components/listItems'
 
 const drawerWidth = 240;
 

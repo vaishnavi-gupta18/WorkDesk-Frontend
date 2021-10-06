@@ -64,8 +64,9 @@ export default function AddProject(props) {
   }
 
   async function MemberData() {
+    axios.defaults.withCredentials = true;
     axios
-        .get('http://127.0.0.1:8000/member/')
+        .get('http://127.0.0.1:8000/member/', { withCredentials:true })
         .then((response) => {
             setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
         })

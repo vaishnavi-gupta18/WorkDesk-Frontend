@@ -4,9 +4,6 @@ import axios from 'axios';
 
 
 import PersistentDrawerLeft from '../ui-components/drawer';
-import HorizontalNonLinearStepper from '../ui-components/test'
-import CustomizedList from '../ui-components/projectcontainer'
-import VerticalLinearStepper from '../ui-components/test3'
 
 import Box from '@mui/material/Box';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
@@ -50,7 +47,6 @@ export default function Dashboard() {
     const [open, setOpen] = React.useState(false);
     const [projectData, setProjectData] = React.useState([]);
     const [cardData, setCardData] = React.useState([]);
-    const [topcardData, setTopCardData] = React.useState([]);
 
     const FireNav = styled(List)({
         '& .MuiListItemButton-root': {
@@ -85,15 +81,8 @@ export default function Dashboard() {
             .then((response) => {
                 if(response.status == 200)
                     {const sorted = [...response.data].sort((a, b) => b['id'] - a['id']);
+                    console.log(response.data)
                     setCardData(sorted)
-                    if(sorted.length > 3)
-                    {
-                        sorted.length = 4;
-                        setTopCardData(sorted)
-                    }
-                    else
-                    setTopCardData(sorted)
-                        
                 }
             })
             .catch((error) => console.log(error));
@@ -109,13 +98,6 @@ export default function Dashboard() {
             <div className='Dashboard'>
                 <PersistentDrawerLeft>
     
-                    {/* <Grid container spacing={4} sx={{ marginTop:0 }}>
-                        <Grid item xs={6}>
-                    <CustomizedList projectData={projectData}/>
-                        </Grid>
-                        <Grid item xs={6}>
-                    <VerticalLinearStepper cardData={topcardData}/>
-                    </Grid></Grid>  */}
                     <Box sx={{
                         width:'100%',
                         height:'90%',
@@ -143,7 +125,7 @@ export default function Dashboard() {
       >
         <Paper elevation={0} sx={{ minWidth: '100%'}}>
           <FireNav component="nav" sx={{ maxWidth: '100%'}} disablePadding>
-          <ListItem component="div" disablePadding>
+          <ListItem component="div" disablePadding key={0}>
             <ListItemButton>
               <ListItemText
                 sx={{ my: 0 }}
@@ -167,7 +149,7 @@ export default function Dashboard() {
                     maxHeight: '78vh'
                 }}
                 >
-                    <ListSubheader disablePadding sx={{ top:-12, }}>
+                    <ListSubheader sx={{ top:-12, }}>
             <ListItemButton>
               <ListItemIcon sx={{ fontSize: 20 }}><LayersIcon /></ListItemIcon>
               <ListItemText
@@ -199,7 +181,7 @@ export default function Dashboard() {
               </Tooltip></ListItemButton>
                     </ListSubheader>
            {projectData && projectData.map(item => {
-               return (<ProjectItem key={item.id} {...item}/>)
+               return (<ProjectItem key={item.id}{...item}/>)
            }) }
            </List>
 
@@ -211,7 +193,7 @@ export default function Dashboard() {
                     maxHeight: '78vh'
                 }}
                 >
-                    <ListSubheader disablePadding sx={{ top:-12, }}>
+                    <ListSubheader sx={{ top:-12, }}>
             <ListItemButton>
               <ListItemIcon sx={{ fontSize: 20 }}><LayersIcon /></ListItemIcon>
               <ListItemText
@@ -241,7 +223,7 @@ export default function Dashboard() {
                                 <div>{cardData && cardData.map(card => {
                                     if(card.list === list.id)
                                     return(
-                                        <TaskCard key={card.id} {...card} projectMembers={projectData.members} projectLists={projectData.lists} listTitle={list.title}/>
+                                        <TaskCard key={card.id} {...card} projectMembers={item.members} projectLists={item.lists} listTitle={list.title}/>
                                     )})}</div>
                             )
                         })}

@@ -42,18 +42,17 @@ export default function Home () {
                 {projectData && projectData.map(item => {
                 return (
                     <Grid item xs={6}>
-                    <ProjectCard key={item.id} {...item} />
+                    <ProjectCard key={item.id}{...item} />
                     </Grid>)
                 })}
             </Grid>
             <Button variant="contained" onClick={()=>setOpen(true)} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
+            <AddIcon/> Add Project
+            </Button>
             <AddProject
             open={open}
             setOpen={setOpen}/>
-            <AddIcon/> Add Project
-            </Button>
             </PersistentDrawerLeft>
-            <AddProject/>
             
             </div>
         );

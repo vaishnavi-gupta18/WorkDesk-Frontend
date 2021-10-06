@@ -100,7 +100,6 @@ const EditCard = (props) => {
 
     function ListObjects(){ 
         let listobject
-        console.log(props)
         props && props.data.projectLists.map(item => {
             if(item.id === props.data.list) 
             listobject = item})
