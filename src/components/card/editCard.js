@@ -154,6 +154,7 @@ const EditCard = (props) => {
   return (
     <div>
       <Dialog
+      maxWidth='50%'
       open={open}
       onClose={() => setOpen(false)}
       aria-labelledby="dialog-title"

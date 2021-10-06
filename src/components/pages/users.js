@@ -5,11 +5,14 @@ import Grid from '@mui/material/Grid';
 
 import UserCard from '../ui-components/userCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
+import { Typography } from "@mui/material";
 
 
 
 export default function Users() {
   const [memberData, setMemberData] = useState([]);
+  const [admin_id, SetAdminId] = React.useState('')
+  const [normal_id, SetNormalId] = React.useState('')
 
   async function MemberData() {
     axios.defaults.withCredentials = true;
@@ -21,23 +24,44 @@ export default function Users() {
         .catch((error) => console.log(error));
     }
 
+    async function GroupData() {
+        axios.defaults.withCredentials = true;
+        axios
+            .get('http://127.0.0.1:8000/group/', { withCredentials:true })
+            .then((response) => {
+                response.data.map(item => {
+                    if(item.name === 'admin')
+                    SetAdminId(item.id)
+                    else if(item.name === 'normaluser')
+                    SetNormalId(item.id)
+                })
+            })
+            .catch((error) => console.log(error));
+        }
+
     React.useEffect(()=>{
         MemberData();  
+        GroupData();
     }, []);
 
 
   return (
     <div className="users">
         <PersistentDrawerLeft>
-            <Grid container spacing={4} sx={{ marginTop:0 }}>
-                {memberData && memberData.map(item=> {
+            <Box>
+                <Typography>
+                    Users
+                </Typography>
+            <Grid container spacing={3} sx={{ marginTop:0 }}>
+                {memberData && admin_id && normal_id && memberData.map(item=> {
                     return (
-                        <Grid item xs={4}>
-                        <UserCard key={item.id} {...item}/>
+                        <Grid item xs={3}>
+                        <UserCard key={item.id} {...item} admin_id={admin_id} normal_id={normal_id}/>
                         </Grid>
                     )
                 })}
             </Grid>
+        </Box>
         </PersistentDrawerLeft>
     </div>
   );

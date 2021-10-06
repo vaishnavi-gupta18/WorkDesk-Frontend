@@ -20,7 +20,7 @@ import Switch from '@mui/material/Switch';
 import Snackbar from '@mui/material/Snackbar';
 
 
-export default function FormDialog() {
+export default function AddProject() {
   const filter = createFilterOptions();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);

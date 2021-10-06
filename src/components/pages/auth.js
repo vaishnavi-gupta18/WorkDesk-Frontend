@@ -13,7 +13,11 @@ class Auth extends Component {
         });
 
         await axios.get('http://127.0.0.1:8000/member/'+localStorage.getItem("user")+'/',{withCredentials: true}).then(resp => {
-        console.log('Response', resp.data);localStorage.setItem("userData", JSON.stringify(resp.data));this.props.history.push("/home");
+        console.log('Response', resp.data);localStorage.setItem("userData", JSON.stringify(resp.data));
+        });
+
+        await axios.get('http://127.0.0.1:8000/user/'+(JSON.parse(localStorage.getItem("userData")).users)+'/',{withCredentials: true}).then(resp => {
+        console.log('Response', resp.data);localStorage.setItem("user", JSON.stringify(resp.data));this.props.history.push("/home");
         });
 
     }

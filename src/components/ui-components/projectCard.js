@@ -26,10 +26,15 @@ const useStyles = makeStyles({
     background: 'linear-gradient( rgb(255 255 255) 30%, rgb(245 249 255) 90%)',
     borderRadius: 12,
     margin: 10,
+    '&:hover': {
+      background: 'rgb(256 256 256)',
+      transform: 'translate(0%, -2%)',
+      transition: 'transform 0.3s',
+   },
   },
   action: {
       justifyContent: 'space-between'
-  }
+  },
 });
 
 

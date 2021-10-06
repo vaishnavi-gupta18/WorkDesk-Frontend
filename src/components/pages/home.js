@@ -70,7 +70,6 @@ class Home extends Component {
                 <div className='project-container'>
                     {projects.map(item => <ProjectCard key={item.id} {...item} />)}
                 </div>
-                <Button variant="contained" onClick={this.logout}>Logout</Button>
             </PersistentDrawerLeft>
             <AddProject/>
             
