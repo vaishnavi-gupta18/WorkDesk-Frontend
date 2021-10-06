@@ -20,11 +20,11 @@ function colorForStatus(status) {
   }
 }
 
-function StatusChip({ status }) {
+function StatusChip({ status, size }) {
   return (
     <Chip
       label={status}
-    //   avatar={status === "completed" && <DoneIcon style={{ color: "white" }} />}
+      size={size}
       style={{ backgroundColor: colorForStatus(status)[500], color: "white" }}
     />
   );

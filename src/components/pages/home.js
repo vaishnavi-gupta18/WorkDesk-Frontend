@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import Grid from '@mui/material/Grid'
 import axios from 'axios';
 
 import './home.css';
@@ -10,71 +11,50 @@ import AddProject from '../project/addproject'
 // import RegisterYourCatForm from '../project/test'
 
 
-class Home extends Component {
+export default function Home () {
+    const [projectData, setProjectData] = useState([]);
+    const [open, setOpen] = React.useState(false);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            projects: []
-        };
-    }
-    logout = (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        axios.get('http://127.0.0.1:8000/logout',{withCredentials: true}).then(resp => {
-        console.log('Response', resp);this.props.history.push("/");
-        });
-    }
-
-    create = (e) => {
-        e.preventDefault();
-        // let data = {creator: 3,
-        //     description: "<p>test</p>",
-        //     is_public: true,
-        //     members: [3],
-        //     start_date: "2021-09-10T14:33:31Z",
-        //     status: "In Progress",
-        //     title: "Project1",
-        //     lists: [1]
-        // }
-        let data = {"title":"Project5","description":"Testing","start_date":"2021-10-29T20:39:00Z","creator":3,"members":[3],"status":"In Progress","is_public":true}
-        axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-        axios.defaults.xsrfCookieName = 'csrftoken';
-        console.log(JSON.stringify({data}));
-        axios.post('http://127.0.0.1:8000/project/',JSON.stringify({data}),{headers: {
-            'Content-type': 'application/json'
-        }}).then(resp => {
-        console.log('Response', resp);
-        });
-        
-    }
-
-    async componentDidMount() {
+    async function ProjectData() {
         axios.defaults.withCredentials = true;
-        let response = await axios.get('http://127.0.0.1:8000/home/', { withCredentials:true })
-            .then(console.log('Data retrieved'))
+        await axios.get('http://127.0.0.1:8000/home/', { withCredentials:true })
+            .then((response) => {
+                if(response.status == 200)
+                    setProjectData(response.data)
+                    console.log(response.data)
+            })
            .catch((error)=>{
               console.log(error);
-           });
-        this.setState({
-            projects: response.data,
-          });
-        console.log(this.state.projects)    
+           }); 
     }
 
-    render() {
-        const { projects } = this.state;
+    React.useEffect(()=>{
+        ProjectData();  
+    }, []);
+
         return (
             <div className='Home'>
             <PersistentDrawerLeft>
-                <div className='project-container'>
+                {/* <div className='project-container'>
                     {projects.map(item => <ProjectCard key={item.id} {...item} />)}
-                </div>
+                </div> */}
+                <Grid container spacing={3} sx={{ marginTop:0 }}>
+                {projectData && projectData.map(item => {
+                return (
+                    <Grid item xs={6}>
+                    <ProjectCard key={item.id} {...item} />
+                    </Grid>)
+                })}
+            </Grid>
+            <Button variant="contained" onClick={()=>setOpen(true)} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
+            <AddProject
+            open={open}
+            setOpen={setOpen}/>
+            <AddIcon/> Add Project
+            </Button>
             </PersistentDrawerLeft>
             <AddProject/>
             
             </div>
         );
-    }
 }
-export default Home;

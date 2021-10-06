@@ -74,7 +74,7 @@ const EditProject = (props) => {
 
   async function ProjectData() {
     await axios
-        .get('http://127.0.0.1:8000/home/'+props.project_id+'/')
+        .get('http://127.0.0.1:8000/project/'+props.project_id+'/')
         .then((response) => {
             let data = response.data;
             setTitle(data.title);
@@ -127,7 +127,7 @@ const EditProject = (props) => {
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
-            .put('http://127.0.0.1:8000/home/'+project_id+'/', data)
+            .put('http://127.0.0.1:8000/project/'+project_id+'/', data)
             .then((res) => {
                 if(res.status === 200){
                     console.log(res)

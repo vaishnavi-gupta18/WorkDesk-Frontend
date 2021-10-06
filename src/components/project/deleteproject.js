@@ -23,7 +23,7 @@ const DeleteProject = (props) => {
 
     async function ProjectData() {
         await axios
-            .get('http://127.0.0.1:8000/home/'+props.project_id+'/')
+            .get('http://127.0.0.1:8000/project/'+props.project_id+'/')
             .then((response) => {
                 setTitle(response.data.title);
             })
@@ -39,7 +39,7 @@ const DeleteProject = (props) => {
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
-            .delete('http://127.0.0.1:8000/home/'+project_id+'/')
+            .delete('http://127.0.0.1:8000/project/'+project_id+'/')
             .then((res) => {
                 if(res.status === 204){
                     console.log(res)

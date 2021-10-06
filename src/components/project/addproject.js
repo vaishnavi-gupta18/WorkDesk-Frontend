@@ -20,17 +20,13 @@ import Switch from '@mui/material/Switch';
 import Snackbar from '@mui/material/Snackbar';
 
 
-export default function AddProject() {
+export default function AddProject(props) {
+  const { open, setOpen } = props;
   const filter = createFilterOptions();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -121,9 +117,6 @@ export default function AddProject() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
-      <AddIcon/> Add Project
-      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Project</DialogTitle>
         <DialogContent>

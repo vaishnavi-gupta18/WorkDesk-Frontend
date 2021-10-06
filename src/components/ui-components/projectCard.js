@@ -66,11 +66,11 @@ export default function ProjectCard(props) {
     }, []);
 
   return (
-    <Card className={classes.root} raised sx={{ margin:3, width: 500 }}>
+    <Card className={classes.root} raised sx={{ margin:3, width: '50%' }}>
         <CardHeader
         onClick={() => history.push('/'+props.id)}
         action={
-            <StatusChip status={props.status} />
+            <StatusChip status={props.status} size='medium'/>
         }
         title={props.title}
         subheader={start_date}
