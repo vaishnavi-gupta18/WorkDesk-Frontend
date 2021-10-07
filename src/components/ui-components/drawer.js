@@ -185,11 +185,6 @@ export default function PersistentDrawerLeft(props) {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}> 
             WorkDesk
           </Typography>
-          <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton color="inherit"
             id="basic-button" 
             aria-controls="basic-menu"

@@ -7,8 +7,7 @@ import axios from 'axios';
 import './home.css';
 import ProjectCard from '../ui-components/projectCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
-import AddProject from '../project/addproject'
-// import RegisterYourCatForm from '../project/test'
+import AddProject from '../project/addproject';
 
 
 export default function Home () {
@@ -35,9 +34,6 @@ export default function Home () {
         return (
             <div className='Home'>
             <PersistentDrawerLeft>
-                {/* <div className='project-container'>
-                    {projects.map(item => <ProjectCard key={item.id} {...item} />)}
-                </div> */}
                 <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {projectData && projectData.map(item => {
                 return (

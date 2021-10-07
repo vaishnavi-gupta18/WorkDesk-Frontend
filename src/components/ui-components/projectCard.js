@@ -87,6 +87,9 @@ export default function ProjectCard(props) {
             })
         })} 
       </Stack>
+      { props && props.members.map( item => {
+        if(item === (JSON.parse(localStorage.getItem("userData")).id))
+        return(
       <Stack direction="row" spacing={1}>
       <Tooltip title="Edit">
         <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
@@ -108,7 +111,8 @@ export default function ProjectCard(props) {
         open={deleteOpen}
         setOpen={setDeleteOpen}
         />
-        </Stack>
+        </Stack>)
+      })}
       </CardActions>
     </Card>
   );
