@@ -26,6 +26,10 @@ const EditCard = (props) => {
   const { data, open, setOpen } = props;
   const filter = createFilterOptions();
   const theme = useTheme();
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
+  const [dueError, setDueError] = React.useState(false);
+  const [dueErrorMsg, setDueErrorMsg] = React.useState('');
   const [value, setValue] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
@@ -119,6 +123,31 @@ const EditCard = (props) => {
 
     async function handleSubmit(e){
       e.preventDefault();
+      if(title === '' || due_date === '')
+      {
+        if(title === ''){
+        setTitleError(true);
+        setTitleErrorMsg('Please enter a valid title')}
+        else
+        {
+          setTitleError(false);
+        setTitleErrorMsg('')
+        }
+
+        if(due_date === ''){
+          setDueError(true);
+          setDueErrorMsg('Please enter due date')}
+        else{
+          setDueError(false);
+        setDueErrorMsg('')
+        }
+        
+      }
+      else{
+        setTitleError(false);
+        setTitleErrorMsg('')
+        setDueError(false);
+        setDueErrorMsg('')
       const data = {
         title: title,
         description: description,
@@ -128,6 +157,12 @@ const EditCard = (props) => {
         assignees: assignees,
         list: list, 
       }
+      if(description === '' || description === '<p><br><p>')
+      data.description = 'No description...'
+      if(start_date === '')
+      data.start_date = curTime
+      if(list === '')
+      data.list = props.data.list
       console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
@@ -138,6 +173,7 @@ const EditCard = (props) => {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
+                    window.location.reload()
                 }
                 else{
                     console.log(res)
@@ -148,6 +184,7 @@ const EditCard = (props) => {
                 setSubmitted(false);
                 console.log(err);
             })
+          }
     }
 
   return (
@@ -163,6 +200,8 @@ const EditCard = (props) => {
           <TextField
             autoFocus
             required
+            error = {titleError}
+            helperText = {titleErrorMsg}
             margin="dense"
             id="title"
             label="Title"
@@ -191,6 +230,8 @@ const EditCard = (props) => {
 
           <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Due Date</InputLabel>
           <TextField
+            error = {dueError}
+            helperText = {dueErrorMsg}
             id="datetime-local"
             type="datetime-local"
             value={due_date}
@@ -219,6 +260,7 @@ const EditCard = (props) => {
 
            <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
           <Autocomplete
+            error
             selectOnFocus
             clearOnBlur
             required

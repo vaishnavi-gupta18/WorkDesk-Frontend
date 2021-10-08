@@ -19,6 +19,8 @@ import { red, blue, grey } from "@material-ui/core/colors";
 
 export default function EditDeleteList(props) {
   const project_id = props.project;
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,11 +62,21 @@ export default function EditDeleteList(props) {
 
     async function handleEdit(e){
         e.preventDefault();
-        const data = {
+        if(title === '')
+        {
+          setTitleError(true);
+        setTitleErrorMsg('Please enter a valid title')
+        }
+        else{
+          setTitleError(false);
+          setTitleErrorMsg('')
+        let data = {
           title: title,
           start_date: start_date,
           project: props.project
         }
+        if(start_date === '')
+        data.start_date = curTime
         axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
         axios.defaults.xsrfCookieName = 'csrftoken';
         return await axios
@@ -85,6 +97,7 @@ export default function EditDeleteList(props) {
                   setESubmitted(false);
                   console.log(err);
               })
+        }
       }
 
       async function handleDelete(e){
@@ -143,6 +156,8 @@ export default function EditDeleteList(props) {
           <TextField
             autoFocus
             required
+            error = {titleError}
+            helperText = {titleErrorMsg}
             margin="dense"
             id="title"
             label="Title"

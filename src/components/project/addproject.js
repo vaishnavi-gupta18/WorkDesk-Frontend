@@ -25,6 +25,8 @@ export default function AddProject(props) {
   const filter = createFilterOptions();
   const theme = useTheme();
   const [value, setValue] = React.useState('');
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
@@ -32,15 +34,15 @@ export default function AddProject(props) {
     setOpen(false);
   };
 
+  var today = new Date(),
+  curTime = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()  + 'Z';
+
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [start_date, setStartDate] = React.useState(curTime);
   const [members, setMembers] = React.useState([]);
   const [status, setStatus] = React.useState('In Progress');
   const [is_public, setPublic] = React.useState(true);
-
-  var today = new Date(),
-  curTime = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()  + 'Z';
 
 
   var handleTitleChange = (e) => {
@@ -86,7 +88,14 @@ export default function AddProject(props) {
     async function handleSubmit(e){
       e.preventDefault();
       members.push(JSON.parse(localStorage.getItem("userData")).id)
-      const data = {
+      if(title === '')
+      {setTitleError(true);
+        setTitleErrorMsg('Please enter a valid title')
+      }
+      else{
+        setTitleError(false);
+        setTitleErrorMsg('')
+      let data = {
         title: title,
         description: description,
         start_date: start_date,
@@ -94,6 +103,13 @@ export default function AddProject(props) {
         status: status,
         is_public: is_public 
       }
+      if(description === '' || description === '<p><br><p>')
+      data.description = 'No description...'
+      if(status === '')
+      data.status = 'In Progress'
+      if(start_date === '')
+      data.start_date = curTime
+      console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
@@ -114,6 +130,7 @@ export default function AddProject(props) {
                 setSubmitted(false);
                 console.log(err);
             })
+      }
     }
 
   return (
@@ -124,17 +141,20 @@ export default function AddProject(props) {
           <TextField
             autoFocus
             required
+            error = {titleError}
             margin="dense"
             id="title"
             label="Title"
             value={title}
+            helperText={titleErrorMsg}
             onChange={handleTitleChange}
             fullWidth
             variant="standard"
           />
           <FormGroup>
-          <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Description</InputLabel>
-          <ReactQuill theme="snow"    
+          <InputLabel autoFocus sx={{ marginTop:3, width: 500 }}>Description</InputLabel>
+          <ReactQuill theme="snow"  
+            error = {titleError}  
             modules={modules}    
             formats={formats}
             value={description}
@@ -147,6 +167,7 @@ export default function AddProject(props) {
           <TextField
             id="datetime-local"
             type="datetime-local"
+            required
             onChange={handleStartDate}/>
 
           
@@ -172,6 +193,7 @@ export default function AddProject(props) {
           <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
           <Autocomplete
             value={value}
+            required
             onChange={(event, newValue) => {
               if (typeof newValue === 'string') {
                 setValue({

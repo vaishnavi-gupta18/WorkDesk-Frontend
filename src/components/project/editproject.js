@@ -24,6 +24,8 @@ const EditProject = (props) => {
   const filter = createFilterOptions();
   const theme = useTheme();
   const [value, setValue] = React.useState('');
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
@@ -115,7 +117,15 @@ const EditProject = (props) => {
     async function handleSubmit(e){
       e.preventDefault();
       members.push(JSON.parse(localStorage.getItem("userData")).id)
-      const data = {
+      if(title === '')
+      {
+        setTitleError(true)
+        setTitleErrorMsg('Please enter a valid title')
+      }
+      else{
+        setTitleError(false);
+        setTitleErrorMsg('')
+      let data = {
         title: title,
         description: description,
         start_date: start_date,
@@ -124,6 +134,13 @@ const EditProject = (props) => {
         status: status,
         is_public: is_public 
       }
+      if(description === '' || description === '<p><br><p>')
+      data.description = 'No description...'
+      if(status === '')
+      data.status = 'In Progress'
+      if(start_date === '')
+      data.start_date = curTime
+      console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
@@ -144,6 +161,7 @@ const EditProject = (props) => {
                 setSubmitted(false);
                 console.log(err);
             })
+      }
     }
 
   return (
@@ -158,6 +176,8 @@ const EditProject = (props) => {
           <TextField
             autoFocus
             required
+            error = {titleError}
+            helperText = {titleErrorMsg}
             margin="dense"
             id="title"
             label="Title"

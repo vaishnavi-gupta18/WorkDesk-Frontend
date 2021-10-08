@@ -23,6 +23,10 @@ import Snackbar from '@mui/material/Snackbar';
 export default function AddCard(props){
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [dueError, setDueError] = React.useState(false);
+  const [dueErrorMsg, setDueErrorMsg] = React.useState('');
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
   const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
@@ -85,6 +89,31 @@ export default function AddCard(props){
 
     async function handleSubmit(e){
       e.preventDefault();
+      if(title === '' || due_date === '')
+      {
+        if(title === ''){
+        setTitleError(true);
+        setTitleErrorMsg('Please enter a valid title')}
+        else
+        {
+          setTitleError(false);
+        setTitleErrorMsg('')
+        }
+
+        if(due_date === ''){
+          setDueError(true);
+          setDueErrorMsg('Please enter due date')}
+        else{
+          setDueError(false);
+        setDueErrorMsg('')
+        }
+        
+      }
+      else{
+        setTitleError(false);
+        setTitleErrorMsg('')
+        setDueError(false);
+        setDueErrorMsg('')
       const data = {
         title: title,
         description: description,
@@ -93,6 +122,10 @@ export default function AddCard(props){
         assignees: assignees,
         list: props.id
       }
+      if(description === '' || description === '<p><br><p>')
+      data.description = 'No description...'
+      if(start_date === '')
+      data.start_date = curTime
       console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
@@ -114,6 +147,7 @@ export default function AddCard(props){
                 setSubmitted(false);
                 console.log(err);
             })
+      }
     }
 
   return (
@@ -127,6 +161,8 @@ export default function AddCard(props){
           <TextField
             autoFocus
             required
+            error = {titleError}
+            helperText = {titleErrorMsg}
             margin="dense"
             id="title"
             label="Title"
@@ -154,6 +190,8 @@ export default function AddCard(props){
 
           <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Due Date</InputLabel>
           <TextField
+          error = {dueError}
+          helperText = {dueErrorMsg}
             id="datetime-local"
             type="datetime-local"
             onChange={handleDueDate}/>

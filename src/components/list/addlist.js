@@ -22,8 +22,11 @@ import Alert from '@mui/material/Alert';
 
 export default function AddList(props) {
   const theme = useTheme();
+  
   const [open, setOpen] = React.useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,11 +36,11 @@ export default function AddList(props) {
     setOpen(false);
   };
 
-  const [title, setTitle] = React.useState('');
-  const [start_date, setStartDate] = React.useState(curTime);
-
   var today = new Date(),
   curTime = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + 'T' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()  + 'Z';
+
+  const [title, setTitle] = React.useState('');
+  const [start_date, setStartDate] = React.useState(curTime);
 
 
   var handleTitleChange = (e) => {
@@ -50,11 +53,21 @@ export default function AddList(props) {
 
     async function handleSubmit(e){
       e.preventDefault();
+      if(title === '')
+      {
+        setTitleError(true);
+        setTitleErrorMsg('Please enter a valid title')
+      }
+      else{
+        setTitleError(false);
+        setTitleErrorMsg('')
       const data = {
         title: title,
         start_date: start_date,
         project: props.project_id
       }
+      if(start_date === '')
+      data.start_date = curTime
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       return await axios
@@ -76,6 +89,7 @@ export default function AddList(props) {
                 setSubmitted(false);
                 console.log(err);
             })
+      }
     }
 
   return (
@@ -89,6 +103,8 @@ export default function AddList(props) {
           <TextField
             autoFocus
             required
+            error = {titleError}
+            helperText = {titleErrorMsg}
             margin="dense"
             id="title"
             label="Title"
