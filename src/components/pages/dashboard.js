@@ -18,6 +18,7 @@ import LayersIcon from '@mui/icons-material/Layers';
 import AddIcon from '@mui/icons-material/Add';
 import ProjectItem from "../ui-components/projectitem";
 import { ListSubheader, Grid, Stack, } from "@mui/material";
+import theme from '../theme'
 
 import AddProject from "../project/addproject";
 import TaskCard from "../ui-components/taskCard"
@@ -104,7 +105,9 @@ export default function Dashboard() {
                             palette: {
                                 mode: 'dark',
                                 primary: { main: 'rgb(102, 157, 246)' },
-                                background: { paper: 'rgb(5, 30, 52)' },
+                                // background: { paper: 'rgb(5, 30, 52)' },
+                                background: { paper: theme.palette.primary.dark },
+
                             },
                             })}
                         >

@@ -8,6 +8,7 @@ import './home.css';
 import ProjectCard from '../ui-components/projectCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
 import AddProject from '../project/addproject';
+import { Typography } from "@mui/material";
 
 
 export default function Home () {
@@ -34,6 +35,7 @@ export default function Home () {
         return (
             <div className='Home'>
             <PersistentDrawerLeft>
+                <Typography variant='h5'>PROJECTS</Typography>
                 <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {projectData && projectData.map(item => {
                 return (

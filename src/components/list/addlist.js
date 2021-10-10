@@ -123,7 +123,7 @@ export default function AddList(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }}>Create</Button>
-          <Button onClick={handleClose} sx={{ marginBottom : 2 }}>Cancel</Button>
+          <Button onClick={handleClose} sx={{ marginBottom : 2 }} style={{ color: theme.palette.grey.main }}>Cancel</Button>
         </DialogActions>
       </Dialog>
       <Snackbar

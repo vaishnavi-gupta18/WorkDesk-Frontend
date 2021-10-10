@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import theme from '../theme'
 
 
 const DeleteProject = (props) => {
@@ -71,7 +71,7 @@ const DeleteProject = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }} style={{ backgroundColor: red[400] }}>Delete</Button>
-          <Button onClick={handleClose} sx={{ marginBottom : 2 } } style={{ color: grey[600] }}>Cancel</Button>
+          <Button onClick={handleClose} sx={{ marginBottom : 2 } } style={{ color: theme.palette.grey.main }}>Cancel</Button>
         </DialogActions>
       </Dialog>
       <Snackbar

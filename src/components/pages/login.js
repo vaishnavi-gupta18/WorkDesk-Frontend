@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@mui/material/Button';
 import { config } from '../../config.js';
+import Logo2 from '../../images/Logo2.png'
 import axios from 'axios';
 
 class Login extends Component {
@@ -23,8 +24,8 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-            <h1>Workdesk</h1>
+            <div className='App'>
+            <img src={Logo2} width="300px"/><br/><br/>
             <Button variant="contained" onClick={this.login}>Login with Channeli</Button>
             </div>
         );

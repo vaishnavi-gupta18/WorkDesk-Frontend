@@ -31,27 +31,3 @@ export const mainListItems = (
     </ListItem>
   </div>
 );
-
-// export const secondaryListItems = (
-//   <div>
-//     <ListSubheader inset>My Tasks</ListSubheader>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Task1" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Task2" />
-//     </ListItem>
-//     <ListItem button>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Task3" />
-//     </ListItem>
-//   </div>
-// );

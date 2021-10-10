@@ -16,6 +16,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { ListItemIcon } from "@material-ui/core";
 import { IconButton } from "@mui/material";
 import { red, blue, grey } from "@material-ui/core/colors";
+import theme from "../theme"
 
 export default function EditDeleteList(props) {
   const project_id = props.project;
@@ -177,7 +178,7 @@ export default function EditDeleteList(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEdit} variant='contained' sx={{ marginBottom : 2 }}>Edit</Button>
-          <Button onClick={handleEditClose} sx={{ marginBottom : 2 }}>Cancel</Button>
+          <Button onClick={handleEditClose} sx={{ marginBottom : 2 }} style={{ color: theme.palette.grey.main }}>Cancel</Button>
         </DialogActions>
       </Dialog>
 

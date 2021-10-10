@@ -23,6 +23,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import theme from '../theme';
 
 import StatusChip from './statuschip'
 import DialogModal from '../project/editproject'
@@ -39,9 +40,9 @@ const useStyles = makeStyles({
     borderRadius: 5,
     marginTop: 10,
   },
-  action: {
-      justifyContent: 'space-between'
-  },
+  header: {
+    padding: 10
+},
 });
 
 
@@ -74,10 +75,10 @@ export default function TasksCard(props) {
     }, []);
 
   return (
-    <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)}>
+    <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)} raised>
         <CardHeader
         className={classes.header}
-        action={
+        action={props && props.isMember &&
         <Stack direction="row" spacing={0}>
             <Tooltip title="Edit">
             <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
@@ -92,7 +93,9 @@ export default function TasksCard(props) {
             </Tooltip>
         </Stack>       
         }
+        titleTypographyProps={{variant:'h6'}}
         title={props && props.title}
+        subheaderTypographyProps={{variant:'caption'}}
         subheader={due_date}
       />
       <Collapse in={expanded} timeout="auto">
@@ -100,7 +103,7 @@ export default function TasksCard(props) {
             {ReactHtmlParser(props.description)} 
         </CardContent>
         </Collapse>
-      <CardActions>
+      <CardActions className={classes.action}>
       <Stack spacing={1} direction="row">
         <AvatarGroup max={2}>
         {props && props.assignees.map(item=>{
@@ -111,7 +114,7 @@ export default function TasksCard(props) {
           })} 
         </AvatarGroup>
         {props && props.listTitle && 
-        <Chip label={props.listTitle}/>
+        <Chip label={props.listTitle} style={{ backgroundColor: theme.palette.secondary.light, color: "white" }} size="small"/>
         }
       </Stack>
 

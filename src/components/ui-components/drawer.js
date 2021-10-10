@@ -4,6 +4,7 @@ import axios from 'axios';
 import Button from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -121,7 +122,7 @@ export default function PersistentDrawerLeft(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [cardData, setCardData] = React.useState([]);
+  const [projectData, setProjectData] = React.useState([]);
   const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
 
   const handleDrawerOpen = () => {
@@ -141,20 +142,20 @@ export default function PersistentDrawerLeft(props) {
     });
 }
 
-  async function CardData() {
+  async function ProjectData() {
         axios.defaults.withCredentials = true;
         axios
-            .get('http://127.0.0.1:8000/usercard/', { withCredentials:true })
+            .get('http://127.0.0.1:8000/userproject/', { withCredentials:true })
             .then((response) => {
                 if(response.status == 200)
                     {const sorted = [...response.data].sort((a, b) => b['id'] - a['id']);
                     if(sorted.length > 3)
                     {
                         sorted.length = 4;
-                        setCardData(sorted)
+                        setProjectData(sorted)
                     }
                     else
-                    setCardData(sorted)
+                    setProjectData(sorted)
                         
                 }
             })
@@ -162,7 +163,7 @@ export default function PersistentDrawerLeft(props) {
         }
         
         React.useEffect(()=>{
-            CardData();
+            ProjectData();
         }, []);
 
   return (
@@ -222,10 +223,10 @@ export default function PersistentDrawerLeft(props) {
         </List>
         <Divider />
         <List>
-          <ListSubheader inset>My Tasks</ListSubheader>
-          {cardData && cardData.map(item => {
+          <ListSubheader inset>My Projects</ListSubheader>
+          {projectData && projectData.map(item => {
             return(
-             <ListItem button>
+             <ListItem button component={Link} to={'/'+item.id}>
              <ListItemIcon>
                <AssignmentIcon />
              </ListItemIcon>
@@ -235,10 +236,7 @@ export default function PersistentDrawerLeft(props) {
         </List>
       </Drawer>
       <Box component="main" sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+            backgroundColor: (theme) => theme.palette.background.default,
             p: 3,
             flexGrow: 1,
             height: '100vh',

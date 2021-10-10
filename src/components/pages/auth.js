@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { CircularProgress } from '@mui/material';
 
 class Auth extends Component {
     async componentDidMount() {
@@ -24,8 +25,9 @@ class Auth extends Component {
 
     render() {
         return (
-            <div>
-            <h1>Workdesk</h1>
+            <div className='App'>
+                {/* <CircularProgress/> */}
+
             </div>
         );
     }

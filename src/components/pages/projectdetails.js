@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser from 'react-html-parser';
 
 import PersistentDrawerLeft from '../ui-components/drawer';
@@ -20,14 +21,28 @@ import AddList from "../list/addlist";
 import AddCard from "../card/addCard";
 import ProjectAccordion from "../ui-components/projectAccordion";
 import TaskCard from "../ui-components/taskCard"
+import theme from "../theme"
 
 import EditDeleteList from "../list/editDeleteList";
 
+const useStyles = makeStyles({
+    root: {
+        padding: 13,
+        marginLeft: 32,
+        marginTop: 32,
+        height: 'fit-content',
+        color: 'white',
+        background: theme.palette.primary.main + 'dd',
+        borderRadius: 6,
+    },
+  });
 
 export default function ProjectDetails() {
     const { id } = useParams();
     const [projectData, setProjectData] = useState(null);
+    const [isMember, setIsMember] = useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const classes = useStyles();
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
@@ -43,7 +58,7 @@ export default function ProjectDetails() {
         padding: theme.spacing(1),
         textAlign: 'center',
         color: 'white',
-        backgroundColor: 'grey',
+        backgroundColor: theme.palette.secondary.light,
         width: '50%'
       }));
 
@@ -55,6 +70,10 @@ export default function ProjectDetails() {
             .then((response) => {
                 if(response.status == 200)
                     setProjectData(response.data)
+                    response.data.members.map(item => {
+                        if(item === (JSON.parse(localStorage.getItem("userData")).id))
+                        setIsMember(true)
+                    })
                     console.log(response.data)
             })
             .catch((error) => console.log(error));
@@ -71,19 +90,19 @@ export default function ProjectDetails() {
             <ProjectAccordion data={projectData}/>
             </div>
             <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={4} sx={{ marginTop:0 }}>
+            <Grid container sx={{ margin:0 }} wrap > 
                 {projectData && projectData.lists.map(item=> {
                     return (
-                        <Grid item xs={3}>
+                        <Grid item xs={2.8} className={classes.root} sx={{marginRight:2,marginTop:3}}>
                         <Stack direction="row" spacing={15}>
                         <Item>{item.title}</Item>
-                        <EditDeleteList key={item.id}{...item}/>
+                        {isMember && <EditDeleteList key={item.id}{...item}/>}
                         </Stack>
                         {item.cards.map(card => (
-                            <TaskCard key={card.id} {...card} projectMembers={projectData.members} projectLists={projectData.lists}/>
+                            <TaskCard key={card.id} {...card} projectMembers={projectData.members} projectLists={projectData.lists} isMember={isMember}/>
                         )
                         )}
-                        <AddCard id={item.id} projectMembers={projectData.members}/>
+                        {isMember && <AddCard id={item.id} projectMembers={projectData.members}/>}
                         </Grid>
                     )
                 })}
@@ -91,7 +110,7 @@ export default function ProjectDetails() {
             </Box>
 
             </PersistentDrawerLeft>
-            <AddList project_id={id}/>
+            {isMember && <AddList project_id={id}/>}
             
             </div>
         );

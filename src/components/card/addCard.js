@@ -122,8 +122,8 @@ export default function AddCard(props){
         assignees: assignees,
         list: props.id
       }
-      if(description === '' || description === '<p><br><p>')
-      data.description = 'No description...'
+      if(description === '' || description === '<p><br></p>')
+      data.description = '<em style="color: rgb(119, 119, 119);">No description provided...</em>'
       if(start_date === '')
       data.start_date = curTime
       console.log(data)
@@ -219,7 +219,7 @@ export default function AddCard(props){
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }}>Create</Button>
-          <Button onClick={handleClose} sx={{ marginBottom : 2 }}>Cancel</Button>
+          <Button onClick={handleClose} sx={{ marginBottom : 2 }} style={{ color: theme.palette.grey.main }}>Cancel</Button>
         </DialogActions>
       </Dialog>
       <Snackbar

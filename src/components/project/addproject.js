@@ -103,8 +103,8 @@ export default function AddProject(props) {
         status: status,
         is_public: is_public 
       }
-      if(description === '' || description === '<p><br><p>')
-      data.description = 'No description...'
+      if(description === '' || description === '<p><br></p>')
+      data.description = '<em style="color: rgb(119, 119, 119);">No description provided...</em>'
       if(status === '')
       data.status = 'In Progress'
       if(start_date === '')
@@ -260,7 +260,7 @@ export default function AddProject(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }}>Create</Button>
-          <Button onClick={handleClose} sx={{ marginBottom : 2 }}>Cancel</Button>
+          <Button onClick={handleClose} sx={{ marginBottom : 2 }} style={{ color: theme.palette.grey.main }}>Cancel</Button>
         </DialogActions>
       </Dialog>
       <Snackbar

@@ -9,7 +9,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { red, blue } from "@material-ui/core/colors";
+import { red, blue, green } from "@material-ui/core/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from '@mui/material/Tooltip';
@@ -127,6 +127,7 @@ export default function UserCard(props) {
           {props.fullname.slice(0,1)}
           </Avatar>
         }
+        titleTypographyProps={{variant:'h6'}}
         title={props.fullname}
         subheader={props.position}
       />
@@ -135,15 +136,12 @@ export default function UserCard(props) {
       <Stack direction="row" spacing={1} sx={{width:'100%'}} className={classes.action}>
         {userData && userData.groups.map(item => {
           if(item === props.normal_id)
-          return (<Button variant='outlined' sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Admin </Button>)
+          return (<Button variant='contained' sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Admin </Button>)
           else
-          return (<Button variant='outlined'sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Normal User</Button>)
+          return (<Button variant='contained'sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Normal User</Button>)
         })}
-        <Button variant='outlined' sx={{ width: 'auto'}} onClick={ChangeActivity}>
-          {userData && userData.is_active && "Disable"}
-          {userData && !userData.is_active && "Enable"}
-        </Button>
-
+          {userData && userData.is_active && <Button variant='contained' sx={{ width: 'auto'}} onClick={ChangeActivity} style={{ backgroundColor: red[400], color: 'white'}}>Disable</Button>}
+          {userData && !userData.is_active && <Button variant='contained' sx={{ width: 'auto'}} onClick={ChangeActivity} style={{ backgroundColor: green[400], color: 'white'}}>Enable</Button>}
       </Stack>
       </CardActions>
         }

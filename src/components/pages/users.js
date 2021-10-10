@@ -49,8 +49,8 @@ export default function Users() {
     <div className="users">
         <PersistentDrawerLeft>
             <Box>
-                <Typography>
-                    Users
+                <Typography variant="h5">
+                    USERS
                 </Typography>
             <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {memberData && admin_id && normal_id && memberData.map(item=> {
