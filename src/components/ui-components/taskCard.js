@@ -19,16 +19,8 @@ import Avatar  from "@mui/material/Avatar";
 import AvatarGroup  from "@mui/material/AvatarGroup";
 import { useHistory } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip'
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import theme from '../theme';
 
-import StatusChip from './statuschip'
-import DialogModal from '../project/editproject'
-import DialogDelete from '../project/deleteproject'
-import MemberChip from './memberChip'
 import { CardActionArea } from "@mui/material";
 import EditCard from '../card/editCard'
 import DeleteCard from '../card/deleteCard'

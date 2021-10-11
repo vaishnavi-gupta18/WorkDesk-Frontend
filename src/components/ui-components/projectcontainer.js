@@ -24,13 +24,6 @@ import ReactHtmlParser from 'react-html-parser';
 import Public from '@mui/icons-material/Public';
 import ProjectItem from './projectitem'
 
-const data = [
-  { icon: <People />, label: 'Authentication' },
-  { icon: <Dns />, label: 'Database' },
-  { icon: <PermMedia />, label: 'Storage' },
-  { icon: <Public />, label: 'Hosting' },
-];
-
 const FireNav = styled(List)({
   '& .MuiListItemButton-root': {
     paddingLeft: 24,
