@@ -73,28 +73,11 @@ const EditCard = (props) => {
   var handleDueDate = (e) => {
     setDueDate(e.target.value)
   }
-  
-  async function MemberData() {
-    await axios
-        .get('http://127.0.0.1:8000/member/')
-        .then((response) => {
-            let memberlist = []
-            props.data.projectMembers.map(item=>{
-                response.data.map(member => {
-                    if(member.id === item)
-                    memberlist.push(member)
-                    })
-                }) 
-            setMemberData(memberlist)
-            
-        })
-        .catch((error) => console.log(error));
-    }
 
     function CardAssigneesObjects(){
         let assigneelist = []
         props && props.data.assignees.map(item=>{
-        memberData.map(member => {
+        props.data.projectMembers.map(member => {
             if(member.id === item)
             assigneelist.push(member)
             })
@@ -111,7 +94,6 @@ const EditCard = (props) => {
     }
 
     React.useEffect(()=>{
-        MemberData(); 
         setTitle(props.data.title);
         setDescription(props.data.description);
         setStartDate(props.data.start_date.slice(0,16))
@@ -243,7 +225,7 @@ const EditCard = (props) => {
             multiple
             id="assignees"
             defaultValue={()=>CardAssigneesObjects()}
-            options={memberData}
+            options={props && props.data.projectMembers}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
             onChange={handleAssigneeChange}
@@ -260,7 +242,6 @@ const EditCard = (props) => {
 
            <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
           <Autocomplete
-            error
             selectOnFocus
             clearOnBlur
             required

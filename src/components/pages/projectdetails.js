@@ -28,7 +28,6 @@ import EditDeleteList from "../list/editDeleteList";
 const useStyles = makeStyles({
     item: {
         padding: 13,
-        // marginLeft: 32,
         marginTop: 32,
         height: 'fit-content',
         color: 'white',
@@ -38,8 +37,6 @@ const useStyles = makeStyles({
         width: '25%'
     },
     container: {
-        height: '90%',
-        // width: '90vw',
         overflow: 'auto',
     },
   });
@@ -47,7 +44,6 @@ const useStyles = makeStyles({
 export default function ProjectDetails() {
     const { id } = useParams();
     const [projectData, setProjectData] = useState(null);
-    const [memberData, setMemberData] = useState(null);
     const [isMember, setIsMember] = useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const classes = useStyles();
@@ -79,27 +75,17 @@ export default function ProjectDetails() {
                 if(response.status == 200)
                     setProjectData(response.data)
                     response.data.members.map(item => {
-                        if(item === (JSON.parse(localStorage.getItem("userData")).id))
+                        if(item.id === (JSON.parse(localStorage.getItem("userData")).id))
                         setIsMember(true)
                     })
                     console.log(response.data)
             })
             .catch((error) => console.log(error));
         }
-
-    async function MemberData() {
-        axios.defaults.withCredentials = true;
-        axios
-            .get('http://127.0.0.1:8000/member/', { withCredentials:true })
-            .then((response) => {
-                setMemberData(response.data)
-            })
-            .catch((error) => console.log(error));
-        }
+        
         
     React.useEffect(()=>{
         ProjectData();  
-        MemberData();
     }, []);
 
         return (
@@ -109,23 +95,6 @@ export default function ProjectDetails() {
             <ProjectAccordion data={projectData}/>
             </div>
             <Box sx={{ flexGrow: 1 }} className={classes.container}>
-            {/* <Grid container sx={{ margin:0 }} className={classes.root}> 
-                {projectData && projectData.lists.map(item=> {
-                    return (
-                        <Grid item xs={2.8} className={classes.item} sx={{marginRight:2,marginTop:3}}>
-                        <Stack direction="row" justifyContent="space-between">
-                        <Item>{item.title}</Item>
-                        {isMember && <EditDeleteList key={item.id}{...item}/>}
-                        </Stack>
-                        {item.cards.map(card => (
-                            <TaskCard key={card.id} {...card} projectMembers={projectData.members} projectLists={projectData.lists} isMember={isMember}/>
-                        )
-                        )}
-                        {isMember && <AddCard id={item.id} projectMembers={projectData.members}/>}
-                        </Grid>
-                    )
-                })}
-            </Grid> */}
 
             <Stack direction="row" className={classes.root}> 
                 {projectData && projectData.lists.map(item=> {

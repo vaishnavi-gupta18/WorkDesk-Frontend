@@ -27,7 +27,6 @@ export default function AddCard(props){
   const [dueErrorMsg, setDueErrorMsg] = React.useState('');
   const [titleError, setTitleError] = React.useState(false);
   const [titleErrorMsg, setTitleErrorMsg] = React.useState('');
-  const [memberData, setMemberData] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
   const handleClickOpen = () => {
@@ -61,30 +60,6 @@ export default function AddCard(props){
 
   var handleStartDate = (e) => {
     setStartDate(e.target.value)
-  }
-
-  async function MemberData() {
-    axios
-        .get('http://127.0.0.1:8000/member/')
-        .then((response) => {
-            setMemberData(response.data)
-        })
-        .catch((error) => console.log(error));
-    }
-
-    React.useEffect(()=>{
-        MemberData();  
-    }, []);
-
-    function MemberObjects(){
-      let memberlist = []
-      props.projectMembers.map(item=>{
-      memberData.map(member => {
-          if(member.id === item)
-          memberlist.push(member)
-          })
-      }) 
-      return memberlist
   }
 
     async function handleSubmit(e){
@@ -201,7 +176,7 @@ export default function AddCard(props){
           <Autocomplete
             multiple
             id="assignees"
-            options={MemberObjects()}
+            options={props && props.projectMembers}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
             onChange={handleAssigneeChange}

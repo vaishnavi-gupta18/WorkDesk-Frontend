@@ -41,7 +41,6 @@ const useStyles = makeStyles({
 export default function TasksCard(props) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [memberData, setMemberData] = useState([]);
   const [expanded, setExpand] = useState(false)
   const classes = useStyles();
 
@@ -50,21 +49,6 @@ export default function TasksCard(props) {
   var time = props.due_date;
   time = time.slice(11,16);
   const due_date= 'Due '+date+', '+time+'';
-
-
-  async function MemberData() {
-    axios
-        .get('http://127.0.0.1:8000/member/')
-        .then((response) => {
-            setMemberData(response.data)
-        })
-        .catch((error) => console.log(error));
-    }
-
-    React.useEffect(()=>{
-        MemberData();  
-        console.log(props.projectLists)
-    }, []);
 
   return (
     <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)} raised>
@@ -99,7 +83,7 @@ export default function TasksCard(props) {
       <Stack spacing={1} direction="row">
         <AvatarGroup max={2}>
         {props && props.assignees.map(item=>{
-          return memberData.map(member => {
+          return props.projectMembers.map(member => {
               if(member.id === item)
               return (<Tooltip title={member.fullname}><Avatar>{member.fullname.slice(0,1)}</Avatar></Tooltip>)
               })
