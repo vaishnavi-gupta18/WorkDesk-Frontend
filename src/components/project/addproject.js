@@ -64,21 +64,6 @@ export default function AddProject(props) {
   var handlePublicChange = (e) => {
     setPublic(e.target.checked)
   }
-
-  async function MemberData() {
-    axios.defaults.withCredentials = true;
-    axios
-        .get('http://127.0.0.1:8000/member/', { withCredentials:true })
-        .then((response) => {
-            setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
-        })
-        .catch((error) => console.log(error));
-    }
-
-    React.useEffect(()=>{
-        MemberData();  
-    }, []);
-
     const statuslist = [
       {title : "In Progress"},
       {title : "Testing"},
@@ -175,7 +160,7 @@ export default function AddProject(props) {
           <Autocomplete
             multiple
             id="members"
-            options={memberData}
+            options={props && props.users}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
             onChange={handleMemberChange}

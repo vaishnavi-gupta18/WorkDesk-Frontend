@@ -12,6 +12,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack'
+import Avatar  from "@mui/material/Avatar";
+import AvatarGroup  from "@mui/material/AvatarGroup";
 import ReactHtmlParser from 'react-html-parser';
 import { useHistory } from 'react-router-dom';
 
@@ -52,19 +54,6 @@ export default function ProjectCard(props) {
   time = time.slice(11,16);
   const start_date = 'Created '+date+','+time
 
-  async function MemberData() {
-    axios
-        .get('http://127.0.0.1:8000/member/')
-        .then((response) => {
-            setMemberData(response.data)
-        })
-        .catch((error) => console.log(error));
-    }
-
-    React.useEffect(()=>{
-        MemberData();  
-    }, []);
-
   return (
     <Card className={classes.root} raised sx={{ margin:3, width: '50%' }}>
         <CardHeader
@@ -79,16 +68,16 @@ export default function ProjectCard(props) {
             {ReactHtmlParser(description)}
       </CardContent>
       <CardActions className={classes.action}>
-      <Stack direction="row" spacing={1}>
-      {props.members.map(item=>{
-        return memberData.map(member => {
-            if(member.id === item)
-            return (<MemberChip key={member.id} {...member}/>)
-            })
-        })} 
+      <Stack direction="row" maxWidth='50%' spacing={1}>
+      <AvatarGroup max={4}>
+        {props && props.members.map(member => {
+              return (<Tooltip title={member.fullname}><Avatar style={{ backgroundColor: blue[300], color: "white" }}>{member.fullname.slice(0,1)}</Avatar></Tooltip>)
+              })
+          }
+        </AvatarGroup>
       </Stack>
       { props && props.members.map( item => {
-        if(item === (JSON.parse(localStorage.getItem("userData")).id))
+        if(item.id === (JSON.parse(localStorage.getItem("userData")).id))
         return(
       <Stack direction="row" spacing={1}>
       <Tooltip title="Edit">
@@ -98,6 +87,7 @@ export default function ProjectCard(props) {
         </Tooltip>
         <EditProject
         project_id={props.id}
+        key={props.id}{...props}
         open={editOpen}
         setOpen={setEditOpen}
       />
@@ -108,6 +98,7 @@ export default function ProjectCard(props) {
       </Tooltip>
         <DeleteProject
         project_id={props.id}
+        key={props.id}{...props}
         open={deleteOpen}
         setOpen={setDeleteOpen}
         />

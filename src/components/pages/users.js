@@ -55,7 +55,7 @@ export default function Users() {
             <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {memberData && admin_id && normal_id && memberData.map(item=> {
                     return (
-                        <Grid item xs={3}>
+                        <Grid item lg={3} md={4} sm={6} xs={12}>
                         <UserCard key={item.id} {...item} admin_id={admin_id} normal_id={normal_id}/>
                         </Grid>
                     )

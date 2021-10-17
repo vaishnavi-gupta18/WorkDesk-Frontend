@@ -13,6 +13,7 @@ import { Typography } from "@mui/material";
 
 export default function Home () {
     const [projectData, setProjectData] = useState([]);
+    const [memberData, setMemberData] = useState([]);
     const [open, setOpen] = React.useState(false);
 
     async function ProjectData() {
@@ -28,7 +29,18 @@ export default function Home () {
            }); 
     }
 
+    async function MemberData() {
+        axios.defaults.withCredentials = true;
+        axios
+            .get('http://127.0.0.1:8000/member/', { withCredentials:true })
+            .then((response) => {
+                setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
+            })
+            .catch((error) => console.log(error));
+        }
+
     React.useEffect(()=>{
+        MemberData(); 
         ProjectData();  
     }, []);
 
@@ -39,8 +51,8 @@ export default function Home () {
                 <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {projectData && projectData.map(item => {
                 return (
-                    <Grid item xs={6}>
-                    <ProjectCard key={item.id}{...item} />
+                    <Grid item xs={12} md={6}>
+                    <ProjectCard key={item.id}{...item} users={memberData} />
                     </Grid>)
                 })}
             </Grid>
@@ -48,6 +60,7 @@ export default function Home () {
             <AddIcon/> Add Project
             </Button>
             <AddProject
+            users={memberData}
             open={open}
             setOpen={setOpen}/>
             </PersistentDrawerLeft>

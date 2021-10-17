@@ -54,7 +54,7 @@ const EditProject = (props) => {
   }
 
   var handleMemberChange = (e,value) => {
-    setMembers(value.map(item=>item.id));
+    setMembers(value);
   }
 
   var handleStartDate = (e) => {
@@ -65,47 +65,24 @@ const EditProject = (props) => {
     setPublic(e.target.checked)
   }
 
-  async function MemberData() {
-    await axios
-        .get('http://127.0.0.1:8000/member/')
-        .then((response) => {
-            setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
-        })
-        .catch((error) => console.log(error));
-    }
-
-  async function ProjectData() {
-    await axios
-        .get('http://127.0.0.1:8000/project/'+props.project_id+'/')
-        .then((response) => {
-            let data = response.data;
-            setTitle(data.title);
-            setDescription(data.description);
-            setStartDate(data.start_date.slice(0,16));
-            setMembers(data.members);
-            setCreator(data.creator);
-            setStatus(data.status);
-            setValue(data.status);
-            setPublic(data.is_public);
-        })
-        .catch((error) => console.log(error));
-    }
-
     function MemberObjects(){
         let memberlist = []
         members.map(item=>{
-        if(item !== (JSON.parse(localStorage.getItem("userData")).id))
-        memberData.map(member => {
-            if(member.id === item)
-            memberlist.push(member)
-            })
+        if(item.id !== (JSON.parse(localStorage.getItem("userData")).id))
+        memberlist.push(item)
         }) 
         return memberlist
     }
 
     React.useEffect(()=>{
-        MemberData(); 
-        ProjectData(); 
+        setTitle(props.title);
+            setDescription(props.description);
+            setStartDate(props.start_date.slice(0,16));
+            setMembers(props.members);
+            setCreator(props.creator);
+            setStatus(props.status);
+            setValue(props.status);
+            setPublic(props.is_public); 
     }, []);
 
     const statuslist = [
@@ -116,7 +93,11 @@ const EditProject = (props) => {
 
     async function handleSubmit(e){
       e.preventDefault();
-      members.push(JSON.parse(localStorage.getItem("userData")).id)
+      let memberlist =[]
+      members.map(item => {
+        memberlist.push(item.id)
+      })
+      memberlist.push(JSON.parse(localStorage.getItem("userData")).id)
       if(title === '')
       {
         setTitleError(true)
@@ -130,7 +111,7 @@ const EditProject = (props) => {
         description: description,
         start_date: start_date,
         creator: creator,
-        members: members,
+        members: memberlist,
         status: status,
         is_public: is_public 
       }
@@ -210,7 +191,7 @@ const EditProject = (props) => {
             multiple
             id="members"
             defaultValue={()=>MemberObjects()}
-            options={memberData}
+            options={props.users}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             getOptionLabel={(option) => typeof option === 'object'? option.fullname : "" }
             onChange={handleMemberChange}

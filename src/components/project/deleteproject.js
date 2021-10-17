@@ -14,26 +14,12 @@ import theme from '../theme'
 
 const DeleteProject = (props) => {
     const { project_id, open, setOpen } = props;
-    const [title, setTitle] = React.useState('');
     const [submitted, setSubmitted] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    async function ProjectData() {
-        await axios
-            .get('http://127.0.0.1:8000/project/'+props.project_id+'/')
-            .then((response) => {
-                setTitle(response.data.title);
-            })
-            .catch((error) => console.log(error));
-        }
-    
-        React.useEffect(()=>{
-            ProjectData(); 
-        }, []);
-  
     async function handleSubmit(e){
       e.preventDefault();
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -67,7 +53,7 @@ const DeleteProject = (props) => {
       >
         <DialogTitle>Delect Project</DialogTitle>
         <DialogContent>
-         Are you sure you want to delete {title} ?
+         Are you sure you want to delete {props && props.title} ?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit} variant='contained' sx={{ marginBottom : 2 }} style={{ backgroundColor: red[400] }}>Delete</Button>
