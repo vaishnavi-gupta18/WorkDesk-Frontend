@@ -73,6 +73,7 @@ export default function ProjectItem(props) {
                 </IconButton>
                 <EditProject
                     project_id={props.id}
+                    key={props.id}{...props}
                     open={editOpen}
                     setOpen={setEditOpen}
                 />
@@ -81,6 +82,7 @@ export default function ProjectItem(props) {
                 </IconButton>
                 <DeleteProject
                     project_id={props.id}
+                    key={props.id}{...props}
                     open={deleteOpen}
                     setOpen={setDeleteOpen}
                 />

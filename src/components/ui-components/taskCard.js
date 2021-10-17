@@ -92,6 +92,9 @@ export default function TasksCard(props) {
         {props && props.listTitle && 
         <Chip label={props.listTitle} style={{ backgroundColor: theme.palette.secondary.light, color: "white" }} size="small"/>
         }
+        {props && props.projectTitle && 
+        <Chip label={props.projectTitle} style={{ backgroundColor: theme.palette.primary.light, color: "white" }} size="small"/>
+        }
       </Stack>
 
       <EditCard

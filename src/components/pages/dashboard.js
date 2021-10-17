@@ -34,6 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function Dashboard() {
     const [open, setOpen] = React.useState(false);
+    const [memberData, setMemberData] = useState([]);
     const [projectData, setProjectData] = React.useState([]);
     const [cardData, setCardData] = React.useState([]);
 
@@ -76,9 +77,20 @@ export default function Dashboard() {
             })
             .catch((error) => console.log(error));
         }
+
+    async function MemberData() {
+        axios.defaults.withCredentials = true;
+        axios
+            .get('http://127.0.0.1:8000/member/', { withCredentials:true })
+            .then((response) => {
+                setMemberData(response.data.filter( item => item.id !== (JSON.parse(localStorage.getItem("userData")).id)))
+            })
+            .catch((error) => console.log(error));
+        }
         
         React.useEffect(()=>{
-            ProjectData();  
+            ProjectData();
+            MemberData();  
             CardData();
         }, []);
     
@@ -170,7 +182,7 @@ export default function Dashboard() {
                 </ListSubheader>
 
            {projectData && projectData.map(item => {
-               return (<ProjectItem key={item.id}{...item}/>)
+               return (<ProjectItem key={item.id}{...item} users={memberData}/>)
            }) }
 
         </List>
@@ -200,7 +212,7 @@ export default function Dashboard() {
 
 
             <Grid container spacing={4} sx={{ marginTop:0, marginLeft:0 }}>
-                    {projectData && projectData.map(item=> {
+                    {/* {projectData && projectData.map(item=> {
                         let check=1;
                         return (
                         <Grid item xs={5}>
@@ -221,8 +233,25 @@ export default function Dashboard() {
                         {check && 'No Tasks assigned'}
                         </Grid>
                     )
-                })}  
+                })}   */}
+            {projectData && projectData.map(item => {
+                return(
+                    item.lists.map(list => {
+                        return(
+                            cardData.map(card => {
+                                if(card.list === list.id)
+                                return(
+                                <Grid item xs={12} md={3.5}>
+                                <TaskCard key={card.id} {...card} projectMembers={item.members} projectLists={item.lists} listTitle={list.title} projectTitle={item.title} isMember={true}/>
+                                </Grid>
+                                )
+                            })
+                        )
+                    })
+                )
+            })}
             </Grid>
+            
             </List>
             </Stack>
             </FireNav>
@@ -232,6 +261,7 @@ export default function Dashboard() {
     </Box>
     </PersistentDrawerLeft>
     <AddProject
+     users={memberData}
     open={open}
     setOpen={setOpen}/>
     </div>
