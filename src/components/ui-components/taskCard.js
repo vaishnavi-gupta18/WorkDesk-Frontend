@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -17,7 +18,7 @@ import Stack from '@mui/material/Stack'
 import ReactHtmlParser from 'react-html-parser';
 import Avatar  from "@mui/material/Avatar";
 import AvatarGroup  from "@mui/material/AvatarGroup";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip'
 import theme from '../theme';
 
@@ -39,10 +40,13 @@ const useStyles = makeStyles({
 
 
 export default function TasksCard(props) {
+  const { id } = useParams();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [expanded, setExpand] = useState(false)
   const classes = useStyles();
+  const history = useHistory();
+  let { path, url } = useRouteMatch();
 
   var date = props.due_date;
   date = date.slice(0,10);
@@ -75,7 +79,7 @@ export default function TasksCard(props) {
         subheader={due_date}
       />
       <Collapse in={expanded} timeout="auto">
-       <CardContent onClick={() => setEditOpen(true)}>
+       <CardContent onClick={() => history.push(`${url}/${props.id}`)}>
             {ReactHtmlParser(props.description)} 
         </CardContent>
         </Collapse>
@@ -108,8 +112,6 @@ export default function TasksCard(props) {
         setOpen={setDeleteOpen}
       />
       </CardActions>
-
-          
     </Card>
   );
 }

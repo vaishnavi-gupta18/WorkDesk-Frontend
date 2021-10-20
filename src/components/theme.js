@@ -35,7 +35,11 @@ const theme = createTheme({
       fontWeight: 700,
     },
     subtitle1: {
-      fontWeight: 400,
+      fontWeight: 700,
+    },
+    subtitle2: {
+      color: 'rgba(0, 0, 0, 0.6)',
+      fontSize: '0.875rem',
     },
     caption: {
       fontSize: '0.8rem',

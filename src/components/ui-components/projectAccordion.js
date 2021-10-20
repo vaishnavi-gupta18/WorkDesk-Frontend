@@ -19,22 +19,6 @@ import MemberChip from "./memberChip";
 
 
 export default function ProjectAccordion(props) {
-    const [memberData, setMemberData] = useState({});
-
-
-    async function MemberData() {
-        axios.defaults.withCredentials = true;
-        axios
-            .get('http://127.0.0.1:8000/member/', { withCredentials:true })
-            .then((response) => {
-                setMemberData(response.data)
-            })
-            .catch((error) => console.log(error));
-        }
-    
-        React.useEffect(()=>{
-            MemberData();  
-        }, []);
 
         return (
             <Accordion>
@@ -51,11 +35,8 @@ export default function ProjectAccordion(props) {
                 <Typography variant="subtitle" >Created on {props && props.data && props.data.start_date.slice(0,10)} </Typography>
                 {ReactHtmlParser(props.data && props.data.description)}
                 <Stack direction="row" spacing={1}>
-                {props.data && props.data.members.map(item=>{
-                    return memberData.map(member => {
-                        if(member.id === item)
+                {props.data && props.data.members.map(member=>{
                         return (<MemberChip key={member.id} {...member}/>)
-                        })
                     })}
                 </Stack>
                 </AccordionDetails>

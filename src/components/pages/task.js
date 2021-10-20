@@ -37,7 +37,7 @@ const useStyles = theme => ({
   }
 });
 
-class App extends Component {
+class taskd extends Component {
 
   state = {
     isLoggedIn: false,
@@ -53,7 +53,7 @@ class App extends Component {
     this.client.send(JSON.stringify({
       type: "message",
       message: this.state.value,
-      name: this.state.name
+      name: 'vaishnavi'
     }));
     this.state.value = ''
     e.preventDefault();
@@ -76,6 +76,7 @@ class App extends Component {
             }]
           })
         );
+        console.log(this.state.messages)
       }
     };
   }
@@ -131,4 +132,4 @@ class App extends Component {
 
   }
 }
-export default withStyles(useStyles)(App)
+export default withStyles(useStyles)(taskd)
