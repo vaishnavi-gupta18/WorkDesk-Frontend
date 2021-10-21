@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import PersistentDrawerLeft from '../ui-components/drawer';
 import Box from '@mui/material/Box';
@@ -22,6 +23,7 @@ import theme from '../theme'
 
 import AddProject from "../project/addproject";
 import TaskCard from "../ui-components/taskCard"
+import TaskDetails from "./taskdetails"
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -264,6 +266,9 @@ export default function Dashboard() {
      users={memberData}
     open={open}
     setOpen={setOpen}/>
+    <Switch>
+            <Route exact path="/dashboard/task/:taskid?" component={TaskDetails} />
+    </Switch>
     </div>
     );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams} from 'react-router-dom';
 import moment from 'moment'
 import axios from 'axios';
@@ -24,6 +24,7 @@ import theme from '../theme'
 
 
 export default function TaskDetails() {
+  const commentSection = useRef(null);
   const { taskid } = useParams();
   const history = useHistory();
   const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
@@ -31,6 +32,10 @@ export default function TaskDetails() {
   const [cardData, setCardData] = useState(null)
   const [message, setMessage] = useState('')
   const [comment, setComment] = useState([])
+
+  const scrollToBottom = () => {
+    commentSection.current.scrollTop = commentSection.scrollHeight;
+  }
 
   async function CardData() {
     axios.defaults.withCredentials = true;
@@ -54,18 +59,19 @@ export default function TaskDetails() {
           console.log('WebSocket Client Connected');
         }; 
 
-      client.onmessage = function(resp){
-      let data = JSON.parse(resp.data);
-      console.log('got reply! ', data);
-      let comments = comment
-      console.log(comment)
-      comments.push(data.message)
-      setComment([...comments])
-      console.log(comment)
-    };
-
-
     }, []);
+
+    React.useEffect(()=>{
+      client.onmessage = function(resp){
+        let data = JSON.parse(resp.data);
+        console.log('got reply! ', data);
+        let comments = comment
+        console.log(comment)
+        comments.push(data.message)
+        setComment([...comments])
+        scrollToBottom()
+      };
+    }, [comment]);
 
     const handleClose = () => {
       client.close();
@@ -121,7 +127,7 @@ export default function TaskDetails() {
                 })} 
           </Stack><br/>
           <Divider/>
-          <Paper style={{ overflow: 'auto', maxHeight: 300, boxShadow: 'none', }}>
+          <Paper style={{ overflow: 'auto', maxHeight: 300, boxShadow: 'none', }} ref={commentSection}>
               {comment && comment.map(item => {
                 return(<Card >
                   <CardHeader
