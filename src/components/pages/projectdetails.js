@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser from 'react-html-parser';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import PersistentDrawerLeft from '../ui-components/drawer';
 import { styled } from '@mui/material/styles';
@@ -13,7 +14,8 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { red, blue, grey } from "@material-ui/core/colors";
 import { Stack } from "@mui/material";
-
+import TaskDetails from "./taskdetails"
+import ProtectedRoute from "../protectedroute"
 
 
 import './home.css';
@@ -117,7 +119,9 @@ export default function ProjectDetails() {
 
             </PersistentDrawerLeft>
             {isMember && <AddList project_id={id}/>}
-            
+            <Switch>
+            <Route exact path="/:id/task/:taskid?" component={TaskDetails} />
+            </Switch>
             </div>
         );
 

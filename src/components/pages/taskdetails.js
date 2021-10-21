@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 
 import UserCard from '../ui-components/userCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
-import { CardContent, DialogContent, Divider, FilledInput, IconButton, Stack, Typography } from "@mui/material";
+import { CardContent, DialogActions, DialogContent, Divider, FilledInput, IconButton, Stack, Typography } from "@mui/material";
 import { DialogTitle } from "@material-ui/core";
 import Avatar  from "@mui/material/Avatar";
 import AvatarGroup  from "@mui/material/AvatarGroup";
@@ -39,6 +39,7 @@ export default function TaskDetails() {
         .then((response) => {
             if(response.status == 200)
                 setCardData(response.data)
+                setComment(response.data.comments_card)
                 console.log(response.data)
         })
         .catch((error) => console.log(error));
@@ -53,16 +54,24 @@ export default function TaskDetails() {
           console.log('WebSocket Client Connected');
         }; 
 
-        client.onmessage = (resp) => {
-          let data = JSON.parse(resp.data);
-          console.log('got reply! ', data);
-          let comments = comment
-          comments.push(data.message)
-          setComment([...comments])
-        };
+      client.onmessage = function(resp){
+      let data = JSON.parse(resp.data);
+      console.log('got reply! ', data);
+      let comments = comment
+      console.log(comment)
+      comments.push(data.message)
+      setComment([...comments])
+      console.log(comment)
+    };
+
+
     }, []);
 
     const handleClose = () => {
+      client.close();
+      client.onclose = () => {
+      console.log("Websocket disconnected");
+      };
         setOpen(false);
         history.goBack()
       };
@@ -75,7 +84,6 @@ export default function TaskDetails() {
         date_created : new Date(),
         body : message
       }
-      console.log(data)
       client.send(JSON.stringify({
         message: data,
       }));
@@ -113,7 +121,7 @@ export default function TaskDetails() {
                 })} 
           </Stack><br/>
           <Divider/>
-          <Paper style={{ overflow: 'auto', maxHeight: '30%', boxShadow: 'none', }}>
+          <Paper style={{ overflow: 'auto', maxHeight: 300, boxShadow: 'none', }}>
               {comment && comment.map(item => {
                 return(<Card >
                   <CardHeader
@@ -154,7 +162,9 @@ export default function TaskDetails() {
         </DialogContent>
 
         }
-       
+        <DialogActions>
+        <Button onClick={handleClose}  style={{ color: theme.palette.grey }}>Close</Button>
+        </DialogActions>
         </Dialog>
         </PersistentDrawerLeft>
     </div>

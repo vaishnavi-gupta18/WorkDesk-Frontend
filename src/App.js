@@ -19,12 +19,7 @@ function App() {
         <ProtectedRoute exact path="/home" component={Home} />
         <ProtectedRoute path="/dashboard" component={Dashboard} />
         <ProtectedRoute path="/users" component={Users} />
-        <ProtectedRoute exact path="/:id?" component={ProjectDetails} />
-        <Router>
-        {/* <ProtectedRoute path="/:id?" component={ProjectDetails} /> */}
-        <ProtectedRoute path="/:id?/:taskid?" component={TaskDetails} />
-        {/* <ProtectedRoute path="/:id?/:taskid?" component={taskd} /> */}
-        </Router>
+        <ProtectedRoute path="/:id" component={ProjectDetails} />
       </Switch>
   );
 }

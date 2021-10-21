@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
+import moment from 'moment'
 import { useParams } from "react-router-dom";
 import ReactHtmlParser from 'react-html-parser';
 
@@ -32,7 +33,7 @@ export default function ProjectAccordion(props) {
                 <StatusChip status={props.data && props.data.status} />
                 </AccordionSummary>
                 <AccordionDetails>
-                <Typography variant="subtitle" >Created on {props && props.data && props.data.start_date.slice(0,10)} </Typography>
+                <Typography variant="subtitle" >Created on {props && props.data && moment(props.data.start_date).format("MMM Do YYYY, h:mm a")} </Typography>
                 {ReactHtmlParser(props.data && props.data.description)}
                 <Stack direction="row" spacing={1}>
                 {props.data && props.data.members.map(member=>{

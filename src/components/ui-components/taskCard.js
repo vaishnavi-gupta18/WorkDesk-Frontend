@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios';
+import moment from 'moment'
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -47,12 +48,7 @@ export default function TasksCard(props) {
   const classes = useStyles();
   const history = useHistory();
   let { path, url } = useRouteMatch();
-
-  var date = props.due_date;
-  date = date.slice(0,10);
-  var time = props.due_date;
-  time = time.slice(11,16);
-  const due_date= 'Due '+date+', '+time+'';
+  const due_date= 'Due '+moment(props.due_date).format("MMM Do YYYY, h:mm a");
 
   return (
     <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)} raised>
@@ -79,7 +75,7 @@ export default function TasksCard(props) {
         subheader={due_date}
       />
       <Collapse in={expanded} timeout="auto">
-       <CardContent onClick={() => history.push(`${url}/${props.id}`)}>
+       <CardContent onClick={() => history.push(`${url}/task/${props.id}`)}>
             {ReactHtmlParser(props.description)} 
         </CardContent>
         </Collapse>
