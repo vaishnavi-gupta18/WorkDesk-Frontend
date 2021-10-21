@@ -70,8 +70,10 @@ export default function ProjectCard(props) {
       <CardActions className={classes.action}>
       <Stack direction="row" maxWidth='50%' spacing={1}>
       <AvatarGroup max={4}>
-        {props && props.members.map(member => {
-              return (<Tooltip title={member.fullname}><Avatar style={{ backgroundColor: blue[300], color: "white" }}>{member.fullname.slice(0,1)}</Avatar></Tooltip>)
+          {props && props.members.map(member => {
+              return (<Tooltip title={member.fullname}>
+                {(member.display_picture!=null)?(<Avatar src={`http://channeli.in${member.display_picture}`}/>):(<Avatar style={{ backgroundColor: blue[300], color: "white" }}>{member.fullname.slice(0,1)}</Avatar>)}
+                </Tooltip>)
               })
           }
         </AvatarGroup>

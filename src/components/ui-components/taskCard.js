@@ -85,7 +85,7 @@ export default function TasksCard(props) {
         {props && props.assignees.map(item=>{
           return props.projectMembers.map(member => {
               if(member.id === item)
-              return (<Tooltip title={member.fullname}><Avatar>{member.fullname.slice(0,1)}</Avatar></Tooltip>)
+              return (<Tooltip title={member.fullname}>{(member.display_picture!=null)?(<Avatar src={`http://channeli.in${member.display_picture}`}/>):(<Avatar style={{ backgroundColor: blue[300], color: "white" }}>{member.fullname.slice(0,1)}</Avatar>)}</Tooltip>)
               })
           })} 
         </AvatarGroup>

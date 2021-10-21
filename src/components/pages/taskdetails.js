@@ -28,6 +28,7 @@ export default function TaskDetails() {
   const { taskid } = useParams();
   const history = useHistory();
   const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
+  const display_picture = JSON.parse(localStorage.getItem("userData")).display_picture;
   const [open, setOpen] = useState(true);
   const [cardData, setCardData] = useState(null)
   const [message, setMessage] = useState('')
@@ -132,9 +133,9 @@ export default function TaskDetails() {
                 return(<Card >
                   <CardHeader
                     avatar={
-                      <Avatar style={{ backgroundColor: theme.palette.primary.light, color: "white" }}>
-                        {item.member.fullname.slice(0,1)}
-                  </Avatar>
+                      (item.member.display_picture!=null)?
+                        (<Avatar src={`http://channeli.in${item.member.display_picture}`}/>):
+                        (<Avatar style={{ backgroundColor: theme.palette.primary.light, color: "white" }}>{item.member.fullname.slice(0,1)}</Avatar>)
                     }
                     title={<Stack direction='row' spacing={2} alignItems='center'><Typography variant="subtitle1">{item.member.fullname}</Typography>
                     <Typography variant="subtitle2">{moment(item.date_created).fromNow()}</Typography></Stack>}
@@ -147,9 +148,9 @@ export default function TaskDetails() {
             <br/>
           <form onSubmit={handleSubmit}>
             <Stack spacing={2} direction='row' alignItems='center' justifyContent='space-evenly'>
-              <Avatar>
-                {name}
-              </Avatar>
+            {(display_picture!=null)?
+            (<Avatar src={`http://channeli.in${display_picture}`}/>):
+            (<Avatar>{name}</Avatar>)}
               <FilledInput
               value = {message} 
               onChange = {(e) => {setMessage(e.target.value)}}

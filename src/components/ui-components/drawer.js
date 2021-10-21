@@ -124,6 +124,7 @@ export default function PersistentDrawerLeft(props) {
   const [open, setOpen] = React.useState(false);
   const [projectData, setProjectData] = React.useState([]);
   const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
+  const display_picture = JSON.parse(localStorage.getItem("userData")).display_picture;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -192,9 +193,9 @@ export default function PersistentDrawerLeft(props) {
             aria-haspopup="true"
             aria-expanded={menuopen ? 'true' : undefined}
             onClick={handleClick}>
-            <Avatar>
-              {name}
-            </Avatar>
+            {(display_picture!=null)?
+            (<Avatar src={`http://channeli.in${display_picture}`}/>):
+            (<Avatar>{name}</Avatar>)}
             </IconButton>
           <Menu
             id="basic-menu"

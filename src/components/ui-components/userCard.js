@@ -122,11 +122,9 @@ export default function UserCard(props) {
   return (
     <Card className={classes.root} raised sx={{ margin:3, width: 500 }}>
         <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-          {props.fullname.slice(0,1)}
-          </Avatar>
-        }
+        avatar={props && (props.display_picture!=null)?
+            (<Avatar src={`http://channeli.in${props.display_picture}`}/>):
+            (<Avatar>{props.fullname.slice(0,1)}</Avatar>)}
         titleTypographyProps={{variant:'h6'}}
         title={props.fullname}
         subheader={props.position}

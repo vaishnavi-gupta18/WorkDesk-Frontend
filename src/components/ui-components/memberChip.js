@@ -7,8 +7,7 @@ import { green, blue, grey, red, orange, teal} from "@material-ui/core/colors";
 export default function MemberChip(props) {
   return (
     <Stack direction="row" spacing={1}>
-      <Chip avatar={<Avatar style={{ backgroundColor: blue[300], color: "white" }}>
-          {(props.fullname).slice(0,1)}</Avatar>} 
+      <Chip avatar={(props.display_picture!=null)?(<Avatar src={`http://channeli.in${props.display_picture}`}/>):(<Avatar style={{ backgroundColor: blue[300], color: "white" }}>{props.fullname.slice(0,1)}</Avatar>)} 
           label={props.fullname} 
           style={{ backgroundColor: blue[600], color: "white" }}/>
     </Stack>
