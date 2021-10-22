@@ -6,8 +6,6 @@ import Home from "./components/pages/home"
 import Users from "./components/pages/users"
 import Dashboard from './components/pages/dashboard';
 import ProjectDetails from "./components/pages/projectdetails"
-import TaskDetails from "./components/pages/taskdetails"
-import taskd from "./components/pages/task"
 import ProtectedRoute from "./components/protectedroute"
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 

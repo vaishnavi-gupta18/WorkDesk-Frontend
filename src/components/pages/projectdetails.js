@@ -77,7 +77,7 @@ export default function ProjectDetails() {
                 if(response.status == 200)
                     setProjectData(response.data)
                     response.data.members.map(item => {
-                        if(item.id === (JSON.parse(localStorage.getItem("userData")).id))
+                        if(item.id === (JSON.parse(localStorage.getItem("userData")).id) || JSON.parse(localStorage.getItem("isAdmin")) === true)
                         setIsMember(true)
                     })
                     console.log(response.data)

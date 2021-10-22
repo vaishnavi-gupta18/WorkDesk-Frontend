@@ -18,7 +18,12 @@ class Auth extends Component {
         });
 
         await axios.get('http://127.0.0.1:8000/user/'+(JSON.parse(localStorage.getItem("userData")).users)+'/',{withCredentials: true}).then(resp => {
-        console.log('Response', resp.data);localStorage.setItem("user", JSON.stringify(resp.data));this.props.history.push("/home");
+        console.log('Response', resp.data);localStorage.setItem("user", JSON.stringify(resp.data));
+        resp.data.groups.map(item => {
+            if(item.name === 'admin')
+            localStorage.setItem("isAdmin",true)
+        })
+        this.props.history.push("/home");
         });
 
     }

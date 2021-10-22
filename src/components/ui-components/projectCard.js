@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import moment from 'moment'
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -48,11 +49,7 @@ export default function ProjectCard(props) {
   const classes = useStyles();
   const description = props.description ;
   const members = props.member
-  var date = props.start_date;
-  date = date.slice(0,10);
-  var time = props.start_date;
-  time = time.slice(11,16);
-  const start_date = 'Created '+date+','+time
+  const start_date= 'Created on '+moment(props.start_date).format("MMM Do YYYY, h:mm a");
 
   return (
     <Card className={classes.root} raised sx={{ margin:3, width: '50%' }}>
@@ -78,9 +75,10 @@ export default function ProjectCard(props) {
           }
         </AvatarGroup>
       </Stack>
+    
       { props && props.members.map( item => {
-        if(item.id === (JSON.parse(localStorage.getItem("userData")).id))
-        return(
+        if((item.id == (JSON.parse(localStorage.getItem("userData")).id)) || (JSON.parse(localStorage.getItem("isAdmin"))))
+        return true}) && 
       <Stack direction="row" spacing={1}>
       <Tooltip title="Edit">
         <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
@@ -104,8 +102,8 @@ export default function ProjectCard(props) {
         open={deleteOpen}
         setOpen={setDeleteOpen}
         />
-        </Stack>)
-      })}
+        </Stack>
+      }
       </CardActions>
     </Card>
   );

@@ -58,7 +58,7 @@ export default function UserCard(props) {
     React.useEffect(()=>{
         UserData(); 
         (JSON.parse(localStorage.getItem("user")).groups).map(item => 
-            { if(item === props.admin_id)
+            { if(item.name === 'admin')
                 SetAdmin(true);
             })
     }, []);
@@ -67,7 +67,7 @@ export default function UserCard(props) {
         e.preventDefault();
         let groups = []
         {userData.groups.map(item => {
-            if(item === props.admin_id)
+            if(item.id === props.admin_id)
             groups.push(props.normal_id)
             else
             groups.push(props.admin_id)
@@ -133,7 +133,7 @@ export default function UserCard(props) {
     {isAdmin && <CardActions className={classes.action}>
       <Stack direction="row" spacing={1} sx={{width:'100%'}} className={classes.action}>
         {userData && userData.groups.map(item => {
-          if(item === props.normal_id)
+          if(item.name === 'normaluser')
           return (<Button variant='contained' sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Admin </Button>)
           else
           return (<Button variant='contained'sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Normal User</Button>)

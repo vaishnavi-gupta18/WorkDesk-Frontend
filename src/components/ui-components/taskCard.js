@@ -80,7 +80,7 @@ export default function TasksCard(props) {
         </CardContent>
         </Collapse>
       <CardActions className={classes.action}>
-      <Stack spacing={1} direction="row">
+      <Stack spacing={1} direction="row" flexWrap>
         <AvatarGroup max={2}>
         {props && props.assignees.map(item=>{
           return props.projectMembers.map(member => {
