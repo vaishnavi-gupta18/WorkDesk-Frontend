@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser from 'react-html-parser';
 import { Link, Route, Switch } from 'react-router-dom';
+import Fab from '@mui/material/Fab';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import PersistentDrawerLeft from '../ui-components/drawer';
 import { styled } from '@mui/material/styles';
@@ -50,6 +52,7 @@ export default function ProjectDetails() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const classes = useStyles();
     const open = Boolean(anchorEl);
+    const midScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

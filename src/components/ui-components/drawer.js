@@ -8,12 +8,15 @@ import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import Logout from '@mui/icons-material/Logout';
@@ -27,11 +30,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleIcon from '@mui/icons-material/People';
+import LayersIcon from '@mui/icons-material/Layers';
 import ListSubheader from '@mui/material/ListSubheader';
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+
+import theme from '../theme'
 import { mainListItems } from '../ui-components/listItems'
+import { Stack } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -121,6 +130,8 @@ export default function PersistentDrawerLeft(props) {
 
   const classes = useStyles();
   const theme = useTheme();
+  const midScreen = useMediaQuery(theme.breakpoints.up('sm'));
+  const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const [projectData, setProjectData] = React.useState([]);
   const name = (JSON.parse(localStorage.getItem("userData")).fullname).slice(0,1);
@@ -165,6 +176,7 @@ export default function PersistentDrawerLeft(props) {
         
         React.useEffect(()=>{
             ProjectData();
+            console.log(props)
         }, []);
 
   return (
@@ -172,7 +184,7 @@ export default function PersistentDrawerLeft(props) {
       <CssBaseline />
       <AppBar position="fixed" open={open} className={classes.root}>
         <Toolbar>
-          <IconButton
+          {midScreen && <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -183,7 +195,7 @@ export default function PersistentDrawerLeft(props) {
             }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton>}
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}> 
             WorkDesk
           </Typography>
@@ -212,6 +224,7 @@ export default function PersistentDrawerLeft(props) {
           </Menu>
         </Toolbar>
       </AppBar>
+      {midScreen && 
       <Drawer variant="permanent" open={open} >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -235,7 +248,21 @@ export default function PersistentDrawerLeft(props) {
            </ListItem>
           )})}
         </List>
-      </Drawer>
+      </Drawer>}
+      {!midScreen &&
+      <Box position="fixed" sx={{top: 'auto', bottom:0, zIndex:1000, width:'100%'}}>
+      <BottomNavigation
+      showLabels
+      value={props.value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}>
+      <BottomNavigationAction label="Dashboard" icon={<DashboardIcon />} component={Link} to="/dashboard"/>
+      <BottomNavigationAction label="Projects" icon={<LayersIcon />} component={Link} to="/home"/>
+      <BottomNavigationAction label="Users" icon={<PeopleIcon />} component={Link} to="/users"/>
+    </BottomNavigation>
+      </Box>
+      }
       <Box component="main" sx={{
             backgroundColor: (theme) => theme.palette.background.default,
             p: 3,

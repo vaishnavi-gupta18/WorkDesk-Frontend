@@ -47,7 +47,7 @@ export default function Users() {
 
   return (
     <div className="users">
-        <PersistentDrawerLeft>
+        <PersistentDrawerLeft value={2}>
             <Box>
                 <Typography variant="h5">
                     USERS

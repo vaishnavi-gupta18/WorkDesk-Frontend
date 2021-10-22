@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid'
+import Fab from '@mui/material/Fab';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import axios from 'axios';
 
 import './home.css';
+import theme from '../theme'
 import ProjectCard from '../ui-components/projectCard'
 import PersistentDrawerLeft from '../ui-components/drawer';
 import AddProject from '../project/addproject';
@@ -15,6 +18,7 @@ export default function Home () {
     const [projectData, setProjectData] = useState([]);
     const [memberData, setMemberData] = useState([]);
     const [open, setOpen] = React.useState(false);
+    const midScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
     async function ProjectData() {
         axios.defaults.withCredentials = true;
@@ -46,7 +50,7 @@ export default function Home () {
 
         return (
             <div className='Home'>
-            <PersistentDrawerLeft>
+            <PersistentDrawerLeft value={1}>
                 <Typography variant='h5'>PROJECTS</Typography>
                 <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {projectData && projectData.map(item => {
@@ -56,9 +60,12 @@ export default function Home () {
                     </Grid>)
                 })}
             </Grid>
-            <Button variant="contained" onClick={()=>setOpen(true)} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
+            {midScreen && <Button variant="contained" onClick={()=>setOpen(true)} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
             <AddIcon/> Add Project
-            </Button>
+            </Button>}
+            {!midScreen && <Fab size="medium" sx={{ position: 'fixed', bottom: 70, right: 30 }} onClick={()=>setOpen(true)} style={{backgroundColor:theme.palette.primary.main, color:"white"}}>
+                <AddIcon/>
+            </Fab>}
             <AddProject
             users={memberData}
             open={open}

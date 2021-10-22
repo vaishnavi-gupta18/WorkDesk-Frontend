@@ -69,7 +69,7 @@ async function MemberData() {
 
 
   return (
-    <PersistentDrawerLeft>
+    <PersistentDrawerLeft value={0}>
     <Typography variant='h5'>DASHBOARD</Typography>
     <Box sx={{ width: '100%'}}>
       <TabContext value={value}>
@@ -79,7 +79,7 @@ async function MemberData() {
             <Tab label="Tasks" value="task" />
           </TabList>
         </Box>
-        <TabPanel value="project" sx={{ padding:2 }}>
+        <TabPanel value="project" sx={{ padding:0 }}>
         <Grid container spacing={3} sx={{ marginTop:0 }}>
                 {projectData && projectData.map(item => {
                 return (
@@ -89,7 +89,7 @@ async function MemberData() {
                 })}
             </Grid>
         </TabPanel>
-        <TabPanel value="task" sx={{ padding:2 }}>
+        <TabPanel value="task" sx={{ padding:0 }}>
         <Grid container spacing={4} sx={{ marginTop:0}}>
             {projectData && projectData.map(item => {
                 return(

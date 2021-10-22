@@ -18,11 +18,15 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Fab from '@mui/material/Fab';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+import theme from '../theme'
 
 
 export default function AddList(props) {
   const theme = useTheme();
-  
+  const midScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const [open, setOpen] = React.useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [titleError, setTitleError] = React.useState(false);
@@ -94,9 +98,12 @@ export default function AddList(props) {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
+      {midScreen && <Button variant="contained" onClick={handleClickOpen} sx={{ position: 'fixed', bottom: 30, right: 30 }}>
       <AddIcon/> Add List
-      </Button>
+      </Button>}
+      {!midScreen && <Fab size="medium" sx={{ position: 'fixed', bottom: 70, right: 30 }} onClick={handleClickOpen} style={{backgroundColor:theme.palette.primary.main, color:"white"}}>
+          <AddIcon/>
+        </Fab>}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add List</DialogTitle>
         <DialogContent>

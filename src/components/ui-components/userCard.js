@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     margin: 10,
   },
   action: {
-      justifyContent: 'right'
+      justifyContent: 'space-between'
   },
 });
 
@@ -138,8 +138,8 @@ export default function UserCard(props) {
           else
           return (<Button variant='contained'sx={{ width: '70%'}} onClick={ChangeAuthorisation}>Make Normal User</Button>)
         })}
-          {userData && userData.is_active && <Button variant='contained' sx={{ width: 'auto'}} onClick={ChangeActivity} style={{ backgroundColor: red[400], color: 'white'}}>Disable</Button>}
-          {userData && !userData.is_active && <Button variant='contained' sx={{ width: 'auto'}} onClick={ChangeActivity} style={{ backgroundColor: green[400], color: 'white'}}>Enable</Button>}
+          {userData && userData.is_active && <Button variant='contained' sx={{ width: '30%'}} onClick={ChangeActivity} style={{ backgroundColor: red[400], color: 'white'}}>Disable</Button>}
+          {userData && !userData.is_active && <Button variant='contained' sx={{ width: '30%'}} onClick={ChangeActivity} style={{ backgroundColor: green[400], color: 'white'}}>Enable</Button>}
       </Stack>
       </CardActions>
         }

@@ -7,6 +7,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import Typography from "@material-ui/core/Typography";
 import Collapse from '@mui/material/Collapse';
 import StepContent from '@mui/material/StepContent';
@@ -33,10 +34,16 @@ const useStyles = makeStyles({
     background: 'linear-gradient( rgb(255 255 255) 30%, rgb(245 249 255) 90%)',
     borderRadius: 5,
     marginTop: 10,
+    '&:hover': {
+      background: 'rgb(256, 256, 256)',
+   },
   },
   header: {
     padding: 10
 },
+  action: {
+    justifyContent : 'space-between',
+  }
 });
 
 
@@ -51,7 +58,7 @@ export default function TasksCard(props) {
   const due_date= 'Due '+moment(props.due_date).format("MMM Do YYYY, h:mm a");
 
   return (
-    <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)} raised>
+    <Card className={classes.root} sx={{ margin:3 }} onMouseOver={()=>setExpand(true)} onMouseOut={()=>setExpand(false)} raised >
         <CardHeader
         className={classes.header}
         action={props && props.isMember &&
@@ -80,7 +87,7 @@ export default function TasksCard(props) {
         </CardContent>
         </Collapse>
       <CardActions className={classes.action}>
-      <Stack spacing={1} direction="row" flexWrap>
+      <Stack spacing={1} direction="row">
         <AvatarGroup max={2}>
         {props && props.assignees.map(item=>{
           return props.projectMembers.map(member => {
@@ -96,7 +103,13 @@ export default function TasksCard(props) {
         <Chip label={props.projectTitle} style={{ backgroundColor: theme.palette.primary.light, color: "white" }} size="small"/>
         }
       </Stack>
-
+      {props && props.comments_card.length>0 && 
+      <Stack spacing={0.5} direction="row" style={{opacity:0.6}} onClick={() => history.push(`${url}/task/${props.id}`)}>
+        <ModeCommentOutlinedIcon/>
+        <Typography variant="subtitle">{props && props.comments_card.length}</Typography>
+      </Stack>}
+      </CardActions>
+      
       <EditCard
         data = {props}
         open={editOpen}
@@ -107,7 +120,6 @@ export default function TasksCard(props) {
         open={deleteOpen}
         setOpen={setDeleteOpen}
       />
-      </CardActions>
     </Card>
   );
 }
