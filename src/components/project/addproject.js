@@ -73,6 +73,7 @@ export default function AddProject(props) {
       {title : "In Progress"},
       {title : "Testing"},
       {title : "Completed"},
+      {title : "Production"},
     ];
 
     async function handleSubmit(e){

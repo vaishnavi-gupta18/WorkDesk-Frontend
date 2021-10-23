@@ -22,6 +22,8 @@ class Auth extends Component {
         resp.data.groups.map(item => {
             if(item.name === 'admin')
             localStorage.setItem("isAdmin",true)
+            else 
+            localStorage.setItem("isAdmin",false)
         })
         this.props.history.push("/home");
         });

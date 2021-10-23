@@ -161,12 +161,6 @@ export default function PersistentDrawerLeft(props) {
             .then((response) => {
                 if(response.status == 200)
                     {const sorted = [...response.data].sort((a, b) => b['id'] - a['id']);
-                    if(sorted.length > 3)
-                    {
-                        sorted.length = 4;
-                        setProjectData(sorted)
-                    }
-                    else
                     setProjectData(sorted)
                         
                 }

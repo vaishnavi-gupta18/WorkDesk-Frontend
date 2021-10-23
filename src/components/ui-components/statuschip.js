@@ -1,7 +1,7 @@
 import React from "react";
 import Chip from "@material-ui/core/Chip";
 import DoneIcon from "@material-ui/icons/Done";
-import { green, blue, grey, red, orange} from "@material-ui/core/colors";
+import { green, blue, grey, red, orange, purple} from "@material-ui/core/colors";
 
 function colorForStatus(status) {
   switch (status) {
@@ -15,6 +15,10 @@ function colorForStatus(status) {
       return orange;
     case "testing":
       return orange;
+    case "Production":
+      return purple;
+    case "Production":
+      return purple;
     default:
       return grey;
   }

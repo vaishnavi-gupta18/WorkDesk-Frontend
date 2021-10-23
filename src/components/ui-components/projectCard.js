@@ -43,16 +43,25 @@ const useStyles = makeStyles({
 });
 
 
+
 export default function ProjectCard(props) {
   const midScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const history = useHistory();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [memberData, setMemberData] = useState([]);
+  const [isMemberorAdmin, setMemberorAdmin] = useState(false)
   const classes = useStyles();
   const description = props.description ;
   const members = props.member
   const start_date= 'Created on '+moment(props.start_date).format("MMM Do YYYY, h:mm a");
+
+    React.useEffect(()=>{
+      props.members.map(item => {
+        if(item.id === (JSON.parse(localStorage.getItem("userData")).id) || JSON.parse(localStorage.getItem("isAdmin")) === true)
+        setMemberorAdmin(true)
+    })
+  }, []);
 
   return (
     <Card className={classes.root} raised sx={{ margin:3, width: '50%' }}>
@@ -82,9 +91,7 @@ export default function ProjectCard(props) {
         </AvatarGroup>
       </Stack>
     
-      { props && props.members.map( item => {
-        if((item.id == (JSON.parse(localStorage.getItem("userData")).id)) || (JSON.parse(localStorage.getItem("isAdmin"))))
-        return true}) && 
+      { props && isMemberorAdmin && 
       <Stack direction="row" spacing={1}>
       <Tooltip title="Edit">
         <IconButton style={{ color: blue[800] }} aria-label="Edit" onClick={() => setEditOpen(true)}>
