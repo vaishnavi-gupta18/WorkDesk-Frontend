@@ -86,22 +86,12 @@ export default function AddProject(props) {
       else{
         setTitleError(false);
         setTitleErrorMsg('')
-      let data = {
-        title: title,
-        description: description,
-        logo: logo,
-        start_date: start_date,
-        members: members,
-        status: status,
-        is_public: is_public 
-      }
       if(description === '' || description === '<p><br></p>')
       setDescription('<em style="color: rgb(119, 119, 119);">No description provided...</em>')
       if(status === '')
       setStatus('In Progress')
       if(start_date === '')
       setStartDate(curTime)
-      console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
       axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
@@ -113,6 +103,7 @@ export default function AddProject(props) {
       formData.append('status',status)
       formData.append('is_public',is_public)
       formData.append('logo',logo)
+      console.log(logo)
       return await axios
             .post('http://127.0.0.1:8000/project/', formData)
             .then((res) => {
@@ -168,7 +159,7 @@ export default function AddProject(props) {
           <TextField
             id="logo"
             type="file"
-            accept=".jpg,.jpeg,.png"
+            accept=".jpg,.jpeg,.png,.svg"
             onChange={handleLogoChange}
           />
           

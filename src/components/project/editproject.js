@@ -35,6 +35,8 @@ const EditProject = (props) => {
   
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [logo, setLogo] = React.useState('');
+  const [newlogo, setNewLogo] = React.useState('');
   const [start_date, setStartDate] = React.useState('');
   const [creator, setCreator] = React.useState();
   const [members, setMembers] = React.useState([]);
@@ -53,6 +55,10 @@ const EditProject = (props) => {
     setDescription(e)
   }
 
+  var handleLogoChange = (e) => {
+    setNewLogo(e.target.files[0])
+  }
+
   var handleMemberChange = (e,value) => {
     setMembers(value);
   }
@@ -63,6 +69,10 @@ const EditProject = (props) => {
 
   var handlePublicChange = (e) => {
     setPublic(e.target.checked)
+  }
+ 
+  var RemoveLogo = (e) => {
+    setLogo('')
   }
 
     function MemberObjects(){
@@ -77,6 +87,7 @@ const EditProject = (props) => {
     React.useEffect(()=>{
         setTitle(props.title);
             setDescription(props.description);
+            setLogo(props.logo);
             setStartDate(props.start_date.slice(0,16));
             setMembers(props.members);
             setCreator(props.creator);
@@ -124,8 +135,21 @@ const EditProject = (props) => {
       console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
+      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      let formData = new FormData()
+      formData.append('title',title)
+      formData.append('description',description)
+      formData.append('start_date',start_date)
+      formData.append('creator',creator)
+      memberlist.forEach(v => formData.append('members', v))
+      formData.append('status',status)
+      formData.append('is_public',is_public)
+      if(newlogo)
+      formData.append('logo',newlogo)
+      else if(logo === '')
+      formData.append('logo',logo)
       return await axios
-            .put('http://127.0.0.1:8000/project/'+project_id+'/', data)
+            .put('http://127.0.0.1:8000/project/'+project_id+'/', formData)
             .then((res) => {
                 if(res.status === 200){
                     console.log(res)
@@ -177,6 +201,19 @@ const EditProject = (props) => {
             id="description"
             label="description"/>
           </FormGroup>
+
+          <Stack>
+          <InputLabel sx={{ marginTop:3, width: '50%' }}>Upload New Logo</InputLabel>
+          <Stack direction="row" spacing={1}>
+          <TextField
+            id="logo"
+            type="file"
+            accept=".jpg,.jpeg,.png,.svg"
+            onChange={handleLogoChange}
+          />
+          <Button variant='outlined' onClick={RemoveLogo}>Remove Logo</Button>
+          </Stack>
+          </Stack>
           
           <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Start Date</InputLabel>
           <TextField
