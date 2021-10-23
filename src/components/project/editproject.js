@@ -131,7 +131,7 @@ const EditProject = (props) => {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
-                    window.location.reload();
+                    props.ProjectData()
                 }
                 else{
                     console.log(res)

@@ -85,7 +85,8 @@ export default function UserCard(props) {
             .then((res) => {
                 if(res.status === 200){
                     console.log(res);
-                    window.location.reload();
+                    props.MemberData()
+                    UserData()
                 }
                 else{
                     console.log(res);
@@ -110,7 +111,8 @@ export default function UserCard(props) {
           .then((res) => {
               if(res.status === 200){
                   console.log(res);
-                  window.location.reload();
+                  props.MemberData()
+                  UserData()
               }
               else{
                   console.log(res);

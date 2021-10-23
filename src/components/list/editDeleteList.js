@@ -87,7 +87,8 @@ export default function EditDeleteList(props) {
                       console.log(res)
                       setEditOpen(false);
                       setESubmitted(true);
-                      window.location.reload();
+                      props.ProjectData()
+                      handleClose()
                   }
                   else{
                       console.log(res)
@@ -112,7 +113,7 @@ export default function EditDeleteList(props) {
                       console.log(res)
                       setDSubmitted(true);
                       setDeleteOpen(false);
-                      window.location.reload();
+                      props.ProjectData()
                   }
                   else{
                       console.log(res)

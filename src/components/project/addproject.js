@@ -120,7 +120,7 @@ export default function AddProject(props) {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
-                    window.location.reload();
+                    props.ProjectData()
                 }
                 else{
                     console.log(res)
@@ -273,7 +273,8 @@ export default function AddProject(props) {
       </Dialog>
       <Snackbar
         open={submitted}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
+        onClose={()=>setSubmitted(false)}
         message="Project Created"
       />
     </div>

@@ -104,13 +104,13 @@ export default function ProjectDetails() {
                         <Stack className={classes.item} sx={{marginRight:3,marginTop:3}}>
                         <Stack direction="row" justifyContent="space-between">
                         <Item>{item.title}</Item>
-                        {isMember && <EditDeleteList key={item.id}{...item}/>}
+                        {isMember && <EditDeleteList key={item.id}{...item} ProjectData={ProjectData}/>}
                         </Stack>
                         {item.cards.map(card => (
-                            <TaskCard key={card.id} {...card} projectMembers={projectData.members} projectLists={projectData.lists} isMember={isMember}/>
+                            <TaskCard key={card.id} {...card} projectMembers={projectData.members} ProjectData={ProjectData} projectLists={projectData.lists} isMember={isMember}/>
                         )
                         )}
-                        {isMember && <AddCard id={item.id} projectMembers={projectData.members}/>}
+                        {isMember && <AddCard id={item.id} projectMembers={projectData.members} ProjectData={ProjectData}/>}
                         </Stack>
                     )
                 })}
@@ -118,7 +118,7 @@ export default function ProjectDetails() {
             </Box>
 
             </PersistentDrawerLeft>
-            {isMember && <AddList project_id={id}/>}
+            {isMember && <AddList project_id={id} ProjectData={ProjectData}/>}
             <Switch>
             <Route exact path="/:id/task/:taskid?" component={TaskDetails} />
             </Switch>

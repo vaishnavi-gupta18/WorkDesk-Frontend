@@ -84,7 +84,7 @@ async function MemberData() {
                 {projectData && projectData.map(item => {
                 return (
                     <Grid item xs={12} md={6}>
-                    <ProjectCard key={item.id}{...item} users={memberData} />
+                    <ProjectCard key={item.id}{...item} users={memberData} ProjectData={ProjectData} />
                     </Grid>)
                 })}
             </Grid>
@@ -99,7 +99,7 @@ async function MemberData() {
                                 if(card.list === list.id)
                                 return(
                                 <Grid item xs={12} sm={6} lg={3} md={4}>
-                                <TaskCard key={card.id} {...card} projectMembers={item.members} projectLists={item.lists} listTitle={list.title} projectTitle={item.title} isMember={true}/>
+                                <TaskCard key={card.id} {...card} projectMembers={item.members} projectLists={item.lists} listTitle={list.title} ProjectData={ProjectData} CardData={CardData} projectTitle={item.title} isMember={true}/>
                                 </Grid>
                                 )
                             })

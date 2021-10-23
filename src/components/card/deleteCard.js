@@ -31,7 +31,9 @@ const DeleteProject = (props) => {
                     console.log(res)
                     setSubmitted(true);
                     setOpen(false);
-                    window.location.reload();
+                    props.data.ProjectData()
+                    if(props.data.CardData)
+                    props.data.CardData()
                 }
                 else{
                     console.log(res)
@@ -60,11 +62,6 @@ const DeleteProject = (props) => {
           <Button onClick={handleClose} sx={{ marginBottom : 2 } } style={{ color: grey[600] }}>Cancel</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={submitted}
-        autoHideDuration={6000}
-        message="Card Deleted"
-      />
     </div>
   );
 };

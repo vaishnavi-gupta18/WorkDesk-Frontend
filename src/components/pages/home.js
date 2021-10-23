@@ -56,7 +56,7 @@ export default function Home () {
                 {projectData && projectData.map(item => {
                 return (
                     <Grid item xs={12} md={6}>
-                    <ProjectCard key={item.id}{...item} users={memberData} />
+                    <ProjectCard key={item.id}{...item} users={memberData} ProjectData={ProjectData}/>
                     </Grid>)
                 })}
             </Grid>
@@ -67,6 +67,7 @@ export default function Home () {
                 <AddIcon/>
             </Fab>}
             <AddProject
+            ProjectData={ProjectData}
             users={memberData}
             open={open}
             setOpen={setOpen}/>

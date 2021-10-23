@@ -31,7 +31,8 @@ const DeleteProject = (props) => {
                     console.log(res)
                     setSubmitted(true);
                     setOpen(false);
-                    window.location.reload();
+                    props.ProjectData()
+                    // window.location.reload();
                 }
                 else{
                     console.log(res)
@@ -60,11 +61,6 @@ const DeleteProject = (props) => {
           <Button onClick={handleClose} sx={{ marginBottom : 2 } } style={{ color: theme.palette.grey.main }}>Cancel</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={submitted}
-        autoHideDuration={6000}
-        message="Project Deleted"
-      />
     </div>
   );
 };

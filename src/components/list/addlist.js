@@ -81,7 +81,7 @@ export default function AddList(props) {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
-                    window.location.reload();
+                    props.ProjectData()
                 }
                 else{
                     console.log(res)
@@ -135,8 +135,9 @@ export default function AddList(props) {
       </Dialog>
       <Snackbar
         open={submitted}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         message="List Created"
+        onClose={()=>setSubmitted(false)}
       />
     </div>
   );

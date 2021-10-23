@@ -56,7 +56,7 @@ export default function Users() {
                 {memberData && admin_id && normal_id && memberData.map(item=> {
                     return (
                         <Grid item lg={3} md={4} sm={6} xs={12}>
-                        <UserCard key={item.id} {...item} admin_id={admin_id} normal_id={normal_id}/>
+                        <UserCard key={item.id} {...item} admin_id={admin_id} normal_id={normal_id} MemberData={MemberData}/>
                         </Grid>
                     )
                 })}

@@ -156,7 +156,9 @@ const EditCard = (props) => {
                     console.log(res)
                     setOpen(false);
                     setSubmitted(true);
-                    window.location.reload()
+                    props.data.ProjectData()
+                    if(props.data.CardData)
+                    props.data.CardData()
                 }
                 else{
                     console.log(res)
