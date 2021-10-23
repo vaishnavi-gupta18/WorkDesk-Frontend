@@ -99,6 +99,9 @@ export default function UserCard(props) {
     async function ChangeActivity(e){
       e.preventDefault();
       userData.is_active = !userData.is_active
+      let group =[]
+      userData.groups.map(item => {group.push(item.id)})
+      userData.groups = group
       console.log(userData)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';

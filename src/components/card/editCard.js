@@ -221,7 +221,7 @@ const EditCard = (props) => {
             onChange={handleDueDate}/>
 
           
-           <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+           <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             multiple
             id="assignees"
@@ -241,7 +241,7 @@ const EditCard = (props) => {
           />
           </Stack>
 
-           <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+           <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             selectOnFocus
             clearOnBlur
@@ -252,7 +252,6 @@ const EditCard = (props) => {
             options={props.data.projectLists}
             getOptionLabel={(option) => typeof option === 'object'? option.title : "" } 
             onChange={handleListChange}
-            sx={{ width: 300 }}
             renderInput={(params) => (
               <TextField {...params} label="List" required/>
             )}

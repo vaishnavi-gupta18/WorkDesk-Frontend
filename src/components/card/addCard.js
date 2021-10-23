@@ -172,7 +172,7 @@ export default function AddCard(props){
             onChange={handleDueDate}/>
 
           
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+          <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             multiple
             id="assignees"

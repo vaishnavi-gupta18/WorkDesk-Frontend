@@ -39,6 +39,7 @@ export default function AddProject(props) {
 
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [logo, setLogo] = React.useState('');
   const [start_date, setStartDate] = React.useState(curTime);
   const [members, setMembers] = React.useState([]);
   const [status, setStatus] = React.useState('In Progress');
@@ -51,6 +52,10 @@ export default function AddProject(props) {
 
   var handleDescriptionChange = (e) => {
     setDescription(e)
+  }
+
+  var handleLogoChange = (e) => {
+    setLogo(e.target.files[0])
   }
 
   var handleMemberChange = (e,value) => {
@@ -72,6 +77,7 @@ export default function AddProject(props) {
 
     async function handleSubmit(e){
       e.preventDefault();
+      const config = { headers:{ 'Content-Type': 'multipart/form-data'}};
       members.push(JSON.parse(localStorage.getItem("userData")).id)
       if(title === '')
       {setTitleError(true);
@@ -83,22 +89,32 @@ export default function AddProject(props) {
       let data = {
         title: title,
         description: description,
+        logo: logo,
         start_date: start_date,
         members: members,
         status: status,
         is_public: is_public 
       }
       if(description === '' || description === '<p><br></p>')
-      data.description = '<em style="color: rgb(119, 119, 119);">No description provided...</em>'
+      setDescription('<em style="color: rgb(119, 119, 119);">No description provided...</em>')
       if(status === '')
-      data.status = 'In Progress'
+      setStatus('In Progress')
       if(start_date === '')
-      data.start_date = curTime
+      setStartDate(curTime)
       console.log(data)
       axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
       axios.defaults.xsrfCookieName = 'csrftoken';
+      axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      let formData = new FormData()
+      formData.append('title',title)
+      formData.append('description',description)
+      formData.append('start_date',start_date)
+      members.forEach(v => formData.append('members', v))
+      formData.append('status',status)
+      formData.append('is_public',is_public)
+      formData.append('logo',logo)
       return await axios
-            .post('http://127.0.0.1:8000/project/', data)
+            .post('http://127.0.0.1:8000/project/', formData)
             .then((res) => {
                 if(res.status === 201){
                     console.log(res)
@@ -147,6 +163,14 @@ export default function AddProject(props) {
             id="description"
             label="description"/>
           </FormGroup>
+
+          <InputLabel sx={{ marginTop:3, width: '50%' }}>Logo</InputLabel>
+          <TextField
+            id="logo"
+            type="file"
+            accept=".jpg,.jpeg,.png"
+            onChange={handleLogoChange}
+          />
           
           <InputLabel autoFocus required sx={{ marginTop:3, width: 500 }}>Start Date</InputLabel>
           <TextField
@@ -156,7 +180,7 @@ export default function AddProject(props) {
             onChange={handleStartDate}/>
 
           
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+          <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             multiple
             id="members"
@@ -175,7 +199,7 @@ export default function AddProject(props) {
           />
           </Stack>
 
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+          <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             value={value}
             required
@@ -232,7 +256,6 @@ export default function AddProject(props) {
               return option.title;
             }}
             renderOption={(props, option) => <li {...props}>{option.title}</li>}
-            sx={{ width: 300 }}
             freeSolo
             renderInput={(params) => (
               <TextField {...params} label="Status" />

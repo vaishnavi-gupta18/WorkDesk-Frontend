@@ -11,6 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { red, blue } from "@material-ui/core/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack'
 import Avatar  from "@mui/material/Avatar";
@@ -22,6 +23,7 @@ import StatusChip from './statuschip'
 import EditProject from '../project/editproject'
 import DeleteProject from '../project/deleteproject'
 import MemberChip from './memberChip'
+import theme from '../theme'
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +44,7 @@ const useStyles = makeStyles({
 
 
 export default function ProjectCard(props) {
+  const midScreen = useMediaQuery(theme.breakpoints.up('sm'));
   const history = useHistory();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -58,8 +61,11 @@ export default function ProjectCard(props) {
         action={
             <StatusChip status={props.status} size='medium'/>
         }
+        titleTypographyProps={{variant:'h5'}}
         title={props.title}
         subheader={start_date}
+        avatar={props && (props.logo!=null) && ((midScreen)?
+          (<img src={props.logo} width='100'/>):(<img src={props.logo} width='50'/>))}
       />
       <CardContent>
             {ReactHtmlParser(description)}

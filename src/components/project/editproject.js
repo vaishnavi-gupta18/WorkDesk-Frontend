@@ -186,7 +186,7 @@ const EditProject = (props) => {
             onChange={handleStartDate}/>
 
           
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+          <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             multiple
             id="members"
@@ -207,7 +207,7 @@ const EditProject = (props) => {
           />
           </Stack>
 
-          <Stack spacing={3} sx={{ marginTop:3, width: 500 }}>
+          <Stack spacing={3} sx={{ marginTop:3, width: '100%' }}>
           <Autocomplete
             value={value}
             onChange={(event, newValue) => {
@@ -263,7 +263,6 @@ const EditProject = (props) => {
               return option.title;
             }}
             renderOption={(props, option) => <li {...props}>{option.title}</li>}
-            sx={{ width: 300 }}
             freeSolo
             renderInput={(params) => (
               <TextField {...params} label="Status" />
